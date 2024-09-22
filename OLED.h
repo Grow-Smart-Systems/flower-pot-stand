@@ -1,7 +1,7 @@
 #pragma once
 
 #include <U8glib.h>
-#include "SensorData.h"
+#include "src/Sensors/SensorData.h"
 
 // SSD1306 OLED
 #define TEXT_STRING_0 10
@@ -11,7 +11,10 @@
 #define TEXT_STRING_4 50
 #define TEXT_STRING_5 60
 
-class OLED {
+class SensorsData;
+
+class OLED 
+{
     public:
         OLED::OLED();
         OLED::~OLED() = default;
@@ -19,5 +22,5 @@ class OLED {
         void printAllData(const SensorsData& data);
 
     private:
-        U8GLIB_SSD1306_128X64 u8g;
+        U8GLIB_SSD1306_128X64 _u8g;
 };

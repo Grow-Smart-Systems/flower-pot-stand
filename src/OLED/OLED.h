@@ -1,7 +1,7 @@
 #pragma once
 
 #include <U8glib.h>
-#include "src/Sensors/SensorData.h"
+#include "../Sensors/SensorData.h"
 
 // SSD1306 OLED
 #define TEXT_STRING_0 10

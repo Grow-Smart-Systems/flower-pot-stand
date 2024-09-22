@@ -3,7 +3,7 @@
 
 OLED::OLED()
 {
-    u8g = U8GLIB_SSD1306_128X64(U8G_I2C_OPT_NONE|U8G_I2C_OPT_DEV_0);	// I2C / TWI 
+    _u8g = U8GLIB_SSD1306_128X64(U8G_I2C_OPT_NONE|U8G_I2C_OPT_DEV_0);	// I2C / TWI 
 }
 
 void OLED::printInitializeScreen()

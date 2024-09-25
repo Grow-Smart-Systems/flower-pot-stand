@@ -10,7 +10,6 @@ SensorsData::SensorsData()
     #if TEMPERATURE_SENSOR == SENSOR_DHT11
         _temperatureSensor = new TemperatureSensorDHT11();
     #endif
-
 }
 
 SensorsData::~SensorsData()

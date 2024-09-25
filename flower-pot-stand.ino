@@ -1,6 +1,6 @@
 #include "src/OLED/OLED.h"
-
 #include "src/Sensors/SensorData.h"
+#include "src/Utils/Timer.h"
 
 /// ===== define ===== //
 
@@ -11,7 +11,9 @@
 
 OLED _screen;
 
-SensorsData _data = SensorsData();
+SensorsData _data;
+
+Timer _globalTimer;
 
 // ===== functions ===== //
 
@@ -21,23 +23,22 @@ void setup(void)
   Serial.println(F("Start!"));
 
   // OLED
+  _screen.init();
   _screen.printInitializeScreen();
 
   //pinMode(PIN_LED, OUTPUT);
 
-  delay(2000);
+  _globalTimer.start(2000);
 }
 
 void loop(void) 
 {
-  // Обновим данные от сенсоров
-  _data.update();
-
-  // picture loop  
-  _screen.printAllData(_data);
-  
-  // rebuild the picture after some delay
-  delay(2000);
+  if(_globalTimer.ready())
+  {
+    // Обновим данные от сенсоров
+    _data.update(); 
+    _screen.printAllData(_data);
+  }
 }
 
 

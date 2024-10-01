@@ -1,6 +1,7 @@
 #include "src/OLED/OLED.h"
 #include "src/Sensors/SensorData.h"
 #include "src/Utils/Timer.h"
+#include "src/Utils/Debug.h"
 
 /// ===== define ===== //
 
@@ -10,20 +11,23 @@
 /// ===== globals ===== //
 
 OLED _screen;
-
 SensorsData _data;
-
 Timer _globalTimer;
+Debug* _debug = nullptr;
 
 // ===== functions ===== //
 
 void setup(void) 
 {
-  Serial.begin(9600);
-  Serial.println(F("Start!"));
+  // Serial
+  _debug = Debug::getInstance(Debug::Baudrate::Baud9600);
+  _debug->printLine("Start program!");
 
   // OLED
-  _screen.init();
+  if(_screen.init())
+    _debug->printLine("OLED init success!");
+  else
+    _debug->printLine("OLED init failed!");
   _screen.printInitializeScreen();
 
   //pinMode(PIN_LED, OUTPUT);
@@ -35,6 +39,7 @@ void loop(void)
 {
   if(_globalTimer.ready())
   {
+    Serial.println(F("Data update!"));
     // Обновим данные от сенсоров
     _data.update(); 
     _screen.printAllData(_data);

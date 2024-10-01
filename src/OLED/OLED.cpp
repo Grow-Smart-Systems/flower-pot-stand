@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "OLED.h"
 
 OLED::OLED()

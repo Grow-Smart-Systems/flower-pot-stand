@@ -20,7 +20,7 @@ public:
 #if TEMPERATURE_SENSOR == SENSOR_DHT11
     #include <DHT.h>
 
-    #define PIN_TEMPERATURE_SENSOR 0x02
+    #define PIN_TEMPERATURE_SENSOR D5
     #define DHTTYPE DHT11
 
 

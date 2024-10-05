@@ -2,50 +2,45 @@
 
 
 OLED::OLED()
-  : _u8g(U8GLIB_SSD1306_128X64(U8G_I2C_OPT_NONE | U8G_I2C_OPT_DEV_0))	// I2C / TWI 
+  : _display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET)
 {
 }
 
 bool OLED::init()
 {
-  if(!_u8g.begin())
+  if(!_display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) 
+  {
+    Serial.println(F("SSD1306 allocation failed"));
     return false;
-  
-  _u8g.setFont(u8g_font_6x10);
-  _u8g.setFontRefHeightExtendedText();
-  _u8g.setFontPosTop();
+  }
+  _display.clearDisplay();
   return true;
 }
 
 void OLED::printInitializeScreen()
 {
-  _u8g.firstPage();
-  do  
-  {
-    //NOTE: Без setFont не работает!
-    _u8g.setColorIndex(1);
-    _u8g.setFont(u8g_font_6x13);
-    _u8g.drawStr(40, DEBUG_TEXT_STRING_3, "LOADING...");
-  } 
-  while( _u8g.nextPage() );
+  _display.clearDisplay();
+  _display.setTextSize(2); // Normal 1:1 pixel scale
+  _display.setTextColor(SSD1306_BLACK, SSD1306_WHITE); // Draw 'inverse' text
+  _display.setCursor(0,0); // Start at top-left corner
+  _display.println(F("LOADING..."));
+  _display.display();
 }
 
-void OLED::printAllData(const SensorsData &data)
+void OLED::printAllData(const SensorsData& data)
 {
-  // picture loop  
-  _u8g.firstPage();  
-  do 
-  {
-    String temperatureStr = "Temp:  " + (isnan(data.temperature)? "nan" : String(data.temperature)) + " C";
-    String humidityStr = "Hum:   " + (isnan(data.humidity)? "nan" : String(data.humidity)) + " %";
-    String luxStr = "Lux:   " + String(data.lux) + " lx";
-    String darkStr = "Is dark: " + String(data.isDark? "+" : "-");
+  String temperatureStr = "Temp:  " + String(data.temperature) + " C";
+  String humidityStr = "Hum:   " + String(data.humidity) + " %";
+  String luxStr = "Lux:   " + String(data.lux) + " lx";
 
-    _u8g.setFont(DEBUG_TEXT_FONT);
-    _u8g.drawStr(0, DEBUG_TEXT_STRING_0, temperatureStr.c_str());
-    _u8g.drawStr(0, DEBUG_TEXT_STRING_1, humidityStr.c_str());
-    _u8g.drawStr(0, DEBUG_TEXT_STRING_2, luxStr.c_str());
-    _u8g.drawStr(0, DEBUG_TEXT_STRING_3, darkStr.c_str());
-  } 
-  while( _u8g.nextPage() );
+  _display.clearDisplay();
+  _display.setTextSize(1);             // Normal 1:1 pixel scale
+  _display.setTextColor(SSD1306_WHITE);        // Draw white text
+  _display.setCursor(0, 0);             // Start at top-left corner
+  
+  _display.println(temperatureStr);
+  _display.println(humidityStr);
+  _display.println(luxStr);
+
+  _display.display();
 }

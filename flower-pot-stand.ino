@@ -1,4 +1,4 @@
-#include "src/OLED/OLED.h"
+#include "src/Screen/Screen.h"
 #include "src/Sensors/SensorData.h"
 #include "src/Utils/Timer.h"
 
@@ -9,11 +9,12 @@
 
 /// ===== globals ===== //
 
-OLED _screen;
+Screen _screen;
 
 SensorsData _data;
 
-Timer _globalTimer;
+Timer _sensorsTimer;
+Timer _screenTimer;
 
 // ===== functions ===== //
 
@@ -29,17 +30,21 @@ void setup(void)
 
     //pinMode(PIN_LED, OUTPUT);
 
-    _globalTimer.start(2000);
+    _sensorsTimer.start(2000);
+    _screenTimer.start(500);
 }
 
 void loop(void)
 {
-    if (_globalTimer.ready())
+    if (_sensorsTimer.ready())
     {
         // Обновим данные от сенсоров
         _data.update();
-        _screen.printAllData(_data);
+    }
+
+    if (_screenTimer.ready())
+    {
+        // Обновим экран
+        _screen.printMenu();
     }
 }
-
-

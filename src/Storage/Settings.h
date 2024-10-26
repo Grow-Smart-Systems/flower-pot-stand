@@ -32,11 +32,19 @@ public:
     /// @param settings - структура настроек освещенности
     void readLightSettings(LightParameters& settings);
 
+    /// @brief Чтение настроек экрана из EEPROM
+    /// @param settings - структура настроек экрана
+    void readScreenSettings(ScreenSettings& settings);
+
     /// @brief Чтение настроек сети из EEPROM
     /// @param settings - структура настроек сети
     void readNetworkSettings(NetworkSettings& settings);
 
     /// ============= Запись настроек ============= ///
+
+    /// @brief Запись всех настроек в EEPROM
+    /// @param settings - общая структура всех настроек
+    void writeAllSettings(const GlobalSettings& settings);
 
     /// @brief Запись настроек температуры в EEPROM
     /// @param settings - структура настроек температуры
@@ -50,36 +58,11 @@ public:
     /// @param settings - структура настроек освещенности
     void writeLightSettings(const LightParameters& settings);
 
+    /// @brief Запись настроек экрана в EEPROM
+    /// @param settings - структура настроек экрана
+    void writeScreenSettings(const ScreenSettings& settings);
+
     /// @brief Запись настроек сети в EEPROM
     /// @param settings - структура настроек сети
     void writeNetworkSettings(const NetworkSettings& settings);
-
-    //NOTE: Возможно позже следует продумать работу с чек-суммой
-//     bool writeDataWithChecksum(int address, const uint8_t* data, size_t length)
-//     {
-//         uint8_t checksum = calculateChecksum(data, length);
-//         EEPROM.put(address, data);
-//         EEPROM.put(address + length, checksum);
-//         return true;
-//     }
-
-//     bool readDataWithChecksum(int address, uint8_t* data, size_t length)
-//     {
-//         EEPROM.get(address, data);
-//         uint8_t storedChecksum;
-//         EEPROM.get(address + length, storedChecksum);
-//         uint8_t calculatedChecksum = calculateChecksum(data, length);
-//         return storedChecksum == calculatedChecksum;
-//     }
-
-// private:
-//     uint8_t calculateChecksum(const uint8_t* data, size_t length)
-//     {
-//         uint8_t checksum = 0;
-//         for (size_t i = 0; i < length; ++i)
-//         {
-//             checksum ^= data[i];
-//         }
-//         return checksum;
-//     }
 };

@@ -9,15 +9,22 @@ Display::Display()
 
 bool Display::init()
 {
-    if (!_display->begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+    Serial.println("Screen | Display init");
+    if (!_display)
         return false;
 
+    Serial.println("Screen | Display begin");
+    if (!_display->begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+    {
+        Serial.println("Screen | Error begin code: " + String(_display->getWriteError()));
+        return false;
+    }
     _display->clearDisplay();
     _display->display();
     return true;
 }
 
-void Display::printMainMenu(int selectedString, bool upTriangle, bool downTriangle, const String& text0, const String& text1 = "", const String& text2 = "")
+void Display::printMainMenu(int selectedString, bool upTriangle, bool downTriangle, const String& text0, const String& text1, const String& text2)
 {
     _display->clearDisplay();
 
@@ -38,7 +45,7 @@ void Display::printMainMenu(int selectedString, bool upTriangle, bool downTriang
     _display->display();
 }
 
-void Display::printSubMenu(int selectedString, const String& text0, const String& text1 = "", const String& text2 = "", const String& text3 = "", const String& text4 = "", const String& text5 = "")
+void Display::printSubMenu(int selectedString, const String& text0, const String& text1, const String& text2, const String& text3, const String& text4, const String& text5)
 {
     _display->clearDisplay();
     printFrame(true);

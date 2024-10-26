@@ -55,6 +55,16 @@ void Data::setDisplayMenu(DisplayMenu menu)
     _displayMenu = menu;
 }
 
+void Data::setScreen(std::shared_ptr<Screen> screen)
+{
+    _screen = screen;
+}
+
+void Data::setSensorsData(std::shared_ptr<SensorsData> sensorsData)
+{
+    _sensorsData = sensorsData;
+}
+
 Data::DisplayStatus Data::getDisplayStatus() const
 {
     return _displayStatus;
@@ -68,4 +78,14 @@ Data::DisplayMode Data::getDisplayMode() const
 Data::DisplayMenu Data::getDisplayMenu() const
 {
     return _displayMenu;
+}
+
+std::shared_ptr<Screen> Data::getScreen() const
+{
+    return _screen;
+}
+
+std::shared_ptr<SensorsData> Data::getSensorsData() const
+{
+    return _sensorsData;
 }

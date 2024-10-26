@@ -2,6 +2,7 @@
 
 Screen::Screen()
 {
+    _display = std::make_shared<Display>();
 }
 
 bool Screen::init()
@@ -9,10 +10,11 @@ bool Screen::init()
     bool result = _display->init();
     if (!result)
     {
-        Serial.println("Error: Display initialization failed");
+        Serial.println("Screen | Error: Display initialization failed");
         return false;
     }
-    return result;
+    initMenu();
+    return true;
 }
 
 void Screen::initMenu()
@@ -90,6 +92,7 @@ void Screen::showMenu()
 
 void Screen::movemenuUp()
 {
+    Serial.println("Screen | movemenuUp");
     if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
@@ -98,6 +101,7 @@ void Screen::movemenuUp()
 
 void Screen::movemenuDown()
 {
+    Serial.println("Screen | movemenuDown");
     if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
@@ -106,6 +110,7 @@ void Screen::movemenuDown()
 
 void Screen::movemenuBack()
 {
+    Serial.println("Screen | movemenuBack");
     if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
@@ -114,6 +119,7 @@ void Screen::movemenuBack()
 
 void Screen::movemenuEnter()
 {
+    Serial.println("Screen | movemenuEnter");
     if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 

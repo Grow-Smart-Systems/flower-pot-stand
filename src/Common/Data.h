@@ -1,6 +1,12 @@
 #pragma once
 
-#include "Common.h"
+#include <Arduino.h>
+#include <memory>
+#include "../Screen/Screen.h"
+#include "../Sensors/SensorData.h"
+
+class Screen;
+class SensorsData;
 
 class Data
 {
@@ -71,6 +77,9 @@ public:
     void setDisplayStatus(DisplayStatus status);
     void setDisplayMode(DisplayMode mode);
     void setDisplayMenu(DisplayMenu menu);
+
+    void setScreen(std::shared_ptr<Screen> screen);
+    void setSensorsData(std::shared_ptr<SensorsData> sensorsData);
     //
 
     //Getters
@@ -81,11 +90,16 @@ public:
     DisplayStatus getDisplayStatus() const;
     DisplayMode getDisplayMode() const;
     DisplayMenu getDisplayMenu() const;
+
+    std::shared_ptr<Screen> getScreen() const;
+    std::shared_ptr<SensorsData> getSensorsData() const;
     //
 
 private:
     Data();
     ~Data() = default;
+    Data(const Data&) = delete;
+    Data& operator=(const Data&) = delete;
 
     TemperatureStatus _temperatureStatus{ UNDEFINED_TEMPERATURE };
     HumidityStatus _humidityStatus{ UNDEFINED_HUMIDITY };
@@ -94,4 +108,7 @@ private:
     DisplayStatus _displayStatus{ UNDEFINED_DISPLAY };
     DisplayMode _displayMode{ UNDEFINED_MODE };
     DisplayMenu _displayMenu{ MAIN_MENU };
+
+    std::shared_ptr<Screen> _screen{ nullptr };
+    std::shared_ptr<SensorsData> _sensorsData{ nullptr };
 };

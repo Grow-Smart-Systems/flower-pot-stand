@@ -7,6 +7,8 @@
 
 #define SUB_MENU_ITEMS_SIZE 5
 
+class Display;
+
 class MenuItem
 {
 public:

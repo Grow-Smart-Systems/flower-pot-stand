@@ -6,6 +6,8 @@
 #include "Display.h"
 #include "MenuItem.h"
 
+class Display;
+class MenuItem;
 
 class Menu
 {

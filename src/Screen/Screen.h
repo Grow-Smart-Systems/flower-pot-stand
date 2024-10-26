@@ -12,6 +12,8 @@
 #include "Menu.h"
 
 class SensorsData;
+class Display;
+class Menu;
 
 class Screen
 {

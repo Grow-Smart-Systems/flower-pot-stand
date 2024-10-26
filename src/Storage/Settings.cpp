@@ -46,7 +46,7 @@ void Settings::readNetworkSettings(NetworkSettings& settings)
 
 void Settings::writeAllSettings(const GlobalSettings& settings)
 {
-    EEPROM.put(0, settings);
+    EEPROM.put(START_ADDRESS_POSITION, settings);
     EEPROM.commit();
 }
 

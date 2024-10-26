@@ -5,6 +5,7 @@
 
 #include "SettingsParameters.h"
 
+#define ZERO_BYTE 0x00
 
 class Settings
 {

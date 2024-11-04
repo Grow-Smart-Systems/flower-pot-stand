@@ -24,11 +24,11 @@ void Menu::showMenu() const
         currentMenuPosition = 2;
 
     bool upTriangle = false;
-    if (_selectedItem > 2)
+    if (_selectedItem > 1 && menuSize > 2)
         upTriangle = true;
 
     bool downTriangle = false;
-    if (_selectedItem < menuSize - 3)
+    if (_selectedItem < menuSize - 2 && menuSize > 2)
         downTriangle = true;
 
     String text0 = "";

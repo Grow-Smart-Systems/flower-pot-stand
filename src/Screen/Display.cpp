@@ -1,6 +1,7 @@
 #include "Display.h"
 #include "Icons.h"
 #include "fonts/Picopixel.h"
+#include "Fonts/TomThumb.h"
 
 Display::Display()
 {
@@ -48,6 +49,7 @@ void Display::printMainMenu(int selectedString, bool upTriangle, bool downTriang
 void Display::printSubMenu(int selectedString, const String& text0, const String& text1, const String& text2, const String& text3, const String& text4, const String& text5)
 {
     _display->clearDisplay();
+
     printFrame(true);
 
     printSubMenuString(text0, SM_STRING_X, SM_STRING_0, selectedString == 0 ? SELECTED : UNSELECTED);
@@ -66,7 +68,6 @@ void Display::printSubMenu(int selectedString, const String& text0, const String
 
     if (text5 != "")
         printSubMenuString(text5, SM_STRING_X, SM_STRING_5, selectedString == 5 ? SELECTED : UNSELECTED);
-
 
     printStatusBar();
 
@@ -146,7 +147,7 @@ void Display::printSubMenuString(String text, uint8_t x, uint8_t y, SELECTED_STA
     //Общая рамка
     if (status == SELECTED)
     {
-        _display->fillRoundRect(x - SM_FRAME_X_OFFSET, y + SM_FRAME_Y_OFFSET, SM_FRAME_WIDTH, SM_FRAME_HEIGHT, FRAME_SUB_MENU_RADIUS, SSD1306_WHITE);
+        _display->fillRoundRect(x - SM_FRAME_X_OFFSET, y - SM_FRAME_Y_OFFSET, SM_STRING_FRAME_WIDTH, SM_STRING_FRAME_HEIGHT, FRAME_SUB_MENU_RADIUS, SSD1306_WHITE);
     }
 
     //Текст

@@ -24,48 +24,71 @@ void Screen::initMenu()
 
     _menu = std::make_shared<Menu>(_display);
 
-    MenuItem mainMenuItem1(_display, "Item 1");
+    MenuItem mainMenuItem1("Item 1");
     {
-        MenuItem subMenuItem1(_display, "SubItem 1.1");
-        MenuItem subMenuItem2(_display, "SubItem 1.2");
-        MenuItem subMenuItem3(_display, "SubItem 1.3");
+        MenuItem subMenuItem1("SubItem 1.1");
+        MenuItem subMenuItem2("SubItem 1.2");
+        MenuItem subMenuItem3("SubItem 1.3");
 
         mainMenuItem1.addSubMenu(subMenuItem1);
         mainMenuItem1.addSubMenu(subMenuItem2);
         mainMenuItem1.addSubMenu(subMenuItem3);
     }
 
-    MenuItem mainMenuItem2(_display, "Item 2");
+    MenuItem mainMenuItem2("Item 2");
     {
-        MenuItem subMenuItem1(_display, "SubItem 2.1");
-        MenuItem subMenuItem2(_display, "SubItem 2.2");
-        MenuItem subMenuItem3(_display, "SubItem 2.3");
+        MenuItem subMenuItem1("SubItem 2.1");
+        MenuItem subMenuItem2("SubItem 2.2");
+        MenuItem subMenuItem3("SubItem 2.3");
 
         mainMenuItem2.addSubMenu(subMenuItem1);
         mainMenuItem2.addSubMenu(subMenuItem2);
         mainMenuItem2.addSubMenu(subMenuItem3);
     }
 
-    MenuItem mainMenuItem3(_display, "Item 3");
+    MenuItem mainMenuItem3("Строка 3");
     {
-        MenuItem subMenuItem1(_display, "SubItem 2.1");
-        MenuItem subMenuItem2(_display, "SubItem 2.2");
-        MenuItem subMenuItem3(_display, "SubItem 2.3");
+        MenuItem subMenuItem1("SubItem 3.1");
+        MenuItem subMenuItem2("SubItem 3.2");
+        MenuItem subMenuItem3("SubItem 3.3");
 
-        mainMenuItem2.addSubMenu(subMenuItem1);
-        mainMenuItem2.addSubMenu(subMenuItem2);
-        mainMenuItem2.addSubMenu(subMenuItem3);
+        mainMenuItem3.addSubMenu(subMenuItem1);
+        mainMenuItem3.addSubMenu(subMenuItem2);
+        mainMenuItem3.addSubMenu(subMenuItem3);
+    }
+
+    MenuItem mainMenuItem4("СТРОКА 4");
+    {
+        MenuItem subMenuItem1("подменю 4.1");
+        MenuItem subMenuItem2("Подменю 4.2");
+        MenuItem subMenuItem3("ПОДМЕНЮ 4.3");
+
+        mainMenuItem4.addSubMenu(subMenuItem1);
+        mainMenuItem4.addSubMenu(subMenuItem2);
+        mainMenuItem4.addSubMenu(subMenuItem3);
+    }
+
+    MenuItem mainMenuItem5(String("Строка 5"));
+    {
+        MenuItem subMenuItem1(String("строка 5.1"));
+        MenuItem subMenuItem2(String("Строка 5.2"));
+        MenuItem subMenuItem3(String("СТРОКА 5.3"));
+
+        mainMenuItem5.addSubMenu(subMenuItem1);
+        mainMenuItem5.addSubMenu(subMenuItem2);
+        mainMenuItem5.addSubMenu(subMenuItem3);
     }
 
     _menu->addItem(mainMenuItem1);
     _menu->addItem(mainMenuItem2);
     _menu->addItem(mainMenuItem3);
+    _menu->addItem(mainMenuItem4);
+    _menu->addItem(mainMenuItem5);
 }
 
 void Screen::printInitializeScreen()
 {
     _display->dispayOn();
-
 }
 
 void Screen::printMenu()

@@ -27,12 +27,16 @@
 
 #define SM_STRING_X 36
 
-#define SM_FRAME_X 34
-#define SM_FRAME_WIDTH 92
-#define SM_FRAME_HEIGHT 10
-#define SM_FRAME_RADIUS 4
+#define SM_STRING_FRAME_WIDTH 90
+#define SM_STRING_FRAME_HEIGHT 10
+#define SM_STRING_FRAME_RADIUS 3
 #define SM_FRAME_X_OFFSET 2
 #define SM_FRAME_Y_OFFSET 6
+
+#define SM_FRAME_X 32
+#define SM_FRAME_WIDTH 96
+#define SM_FRAME_HEIGHT 64
+#define SM_FRAME_RADIUS 4
 //
 
 // statusbar defines
@@ -138,7 +142,7 @@ public:
     /// @param text5 Текст строки 5 меню
     void printSubMenu(int selectedString, const String& text0, const String& text1 = "", const String& text2 = "", const String& text3 = "", const String& text4 = "", const String& text5 = "");
 
-    void printFunctionMenu();
+    //void printFunctionMenu();
 
     void dispayOn();
 

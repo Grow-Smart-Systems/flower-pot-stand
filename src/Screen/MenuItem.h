@@ -12,7 +12,10 @@ class Display;
 class MenuItem
 {
 public:
-    MenuItem(std::shared_ptr<Display> display, const String& name, std::function<void()> action = nullptr);
+    MenuItem(const String& name, std::function<void()> action = nullptr);
+    ~MenuItem() = default;
+
+    String getName() const { return name; }
 
     void addSubMenu(const MenuItem& item);
 
@@ -22,15 +25,11 @@ public:
 
     void displaySubMenu() const;
 
-    String getName() const { return name; }
-
     void selectNextItem();
 
     void selectPreviousItem();
 
 private:
-
-    std::shared_ptr<Display> _display;
 
     String name;
 
@@ -39,6 +38,4 @@ private:
     std::vector<MenuItem> subMenu;
 
     int _selectedSubItem{ 0 };
-
-
 };

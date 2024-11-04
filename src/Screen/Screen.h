@@ -43,6 +43,8 @@ public:
 
     void movemenuEnter();
 
+    std::shared_ptr<Display> getDisplay() const { return _display; }
+
 private:
     /// @brief Экземпляр дисплея объекта для SSD1306 с разрешением 128x64, с использованием аппаратного I2C.
     std::shared_ptr<Display> _display{ nullptr };

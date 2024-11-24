@@ -17,28 +17,29 @@ Timer _globalTimer;
 
 // ===== functions ===== //
 
-void setup(void) 
+void setup(void)
 {
-  Serial.begin(9600);
-  Serial.println(F("Start!"));
+    Serial.begin(9600);
+    Serial.println(F("Start!"));
 
-  // OLED
-  _screen.init();
-  _screen.printInitializeScreen();
+    // OLED
+    Wire.begin(SDA, SCL);
+    _screen.init();
+    _screen.printInitializeScreen();
 
-  //pinMode(PIN_LED, OUTPUT);
+    //pinMode(PIN_LED, OUTPUT);
 
-  _globalTimer.start(2000);
+    _globalTimer.start(2000);
 }
 
-void loop(void) 
+void loop(void)
 {
-  if(_globalTimer.ready())
-  {
-    // Обновим данные от сенсоров
-    _data.update(); 
-    _screen.printAllData(_data);
-  }
+    if (_globalTimer.ready())
+    {
+        // Обновим данные от сенсоров
+        _data.update();
+        _screen.printAllData(_data);
+    }
 }
 
 

@@ -21,6 +21,8 @@ public:
 
     void execute();
 
+    void selectedItemExecute();
+
     void back();
 
     void displaySubMenu() const;
@@ -38,4 +40,6 @@ private:
     std::vector<MenuItem> subMenu;
 
     int _selectedSubItem{ 0 };
+
+    const float INVERTED_SUB_MENU_ITEMS_SIZE{ 1.0f / 5.0f };
 };

@@ -28,6 +28,8 @@ public:
 
     void initMenu();
 
+    void temperatureAction();
+
     void printInitializeScreen();
 
     void printMenu();

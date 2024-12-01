@@ -22,6 +22,8 @@ public:
 
     void showSubMenu() const;
 
+    void showFunctionalScreen() const;
+
     void executeMenu();
 
     void selectNextItem();

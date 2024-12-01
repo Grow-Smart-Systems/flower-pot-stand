@@ -61,7 +61,14 @@ public:
     {
         MAIN_MENU,
         SUB_MENU,
-        FUCTIONAL_MENU
+        FUNCTIONAL_SCREEN
+    };
+    enum DisplayFunctionalScreen
+    {
+        UNDEFINED_FUNCTIONAL_SCREEN,
+        TEMPERATURE_SENSOR_SCREEN,
+        HUMIDITY_SENSOR_SCREEN,
+        LUX_SENSOR_SCREEN
     };
     //
 
@@ -77,6 +84,7 @@ public:
     void setDisplayStatus(DisplayStatus status);
     void setDisplayMode(DisplayMode mode);
     void setDisplayMenu(DisplayMenu menu);
+    void setDisplayFunctionalScreen(DisplayFunctionalScreen screen);
 
     void setScreen(std::shared_ptr<Screen> screen);
     void setSensorsData(std::shared_ptr<SensorsData> sensorsData);
@@ -90,6 +98,7 @@ public:
     DisplayStatus getDisplayStatus() const;
     DisplayMode getDisplayMode() const;
     DisplayMenu getDisplayMenu() const;
+    DisplayFunctionalScreen getDisplayFunctionalScreen() const;
 
     std::shared_ptr<Screen> getScreen() const;
     std::shared_ptr<SensorsData> getSensorsData() const;
@@ -108,6 +117,7 @@ private:
     DisplayStatus _displayStatus{ UNDEFINED_DISPLAY };
     DisplayMode _displayMode{ UNDEFINED_MODE };
     DisplayMenu _displayMenu{ MAIN_MENU };
+    DisplayFunctionalScreen _displayFunctionalScreen{ UNDEFINED_FUNCTIONAL_SCREEN };
 
     std::shared_ptr<Screen> _screen{ nullptr };
     std::shared_ptr<SensorsData> _sensorsData{ nullptr };

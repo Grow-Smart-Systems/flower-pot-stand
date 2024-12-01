@@ -55,6 +55,11 @@ void Data::setDisplayMenu(DisplayMenu menu)
     _displayMenu = menu;
 }
 
+void Data::setDisplayFunctionalScreen(DisplayFunctionalScreen screen)
+{
+    _displayFunctionalScreen = screen;
+}
+
 void Data::setScreen(std::shared_ptr<Screen> screen)
 {
     _screen = screen;
@@ -78,6 +83,11 @@ Data::DisplayMode Data::getDisplayMode() const
 Data::DisplayMenu Data::getDisplayMenu() const
 {
     return _displayMenu;
+}
+
+Data::DisplayFunctionalScreen Data::getDisplayFunctionalScreen() const
+{
+    return _displayFunctionalScreen;
 }
 
 std::shared_ptr<Screen> Data::getScreen() const

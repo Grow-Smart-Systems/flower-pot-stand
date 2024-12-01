@@ -24,6 +24,18 @@ void Screen::initMenu()
 
     _menu = std::make_shared<Menu>(_display);
 
+    MenuItem SensorsMenuItem("Sensors");
+    {
+        MenuItem TemperatureMenuItem("Temperature", std::bind(&Screen::temperatureAction, this));
+        MenuItem HumidityMenuItem("Humidity");
+        MenuItem LuxMenuItem("Lux");
+
+        SensorsMenuItem.addSubMenu(TemperatureMenuItem);
+        SensorsMenuItem.addSubMenu(HumidityMenuItem);
+        SensorsMenuItem.addSubMenu(LuxMenuItem);
+    }
+    _menu->addItem(SensorsMenuItem);
+
     MenuItem mainMenuItem1("Item 1");
     {
         MenuItem subMenuItem1("SubItem 1.1");
@@ -46,44 +58,15 @@ void Screen::initMenu()
         mainMenuItem2.addSubMenu(subMenuItem3);
     }
 
-    MenuItem mainMenuItem3("Строка 3");
-    {
-        MenuItem subMenuItem1("SubItem 3.1");
-        MenuItem subMenuItem2("SubItem 3.2");
-        MenuItem subMenuItem3("SubItem 3.3");
-
-        mainMenuItem3.addSubMenu(subMenuItem1);
-        mainMenuItem3.addSubMenu(subMenuItem2);
-        mainMenuItem3.addSubMenu(subMenuItem3);
-    }
-
-    MenuItem mainMenuItem4("СТРОКА 4");
-    {
-        MenuItem subMenuItem1("подменю 4.1");
-        MenuItem subMenuItem2("Подменю 4.2");
-        MenuItem subMenuItem3("ПОДМЕНЮ 4.3");
-
-        mainMenuItem4.addSubMenu(subMenuItem1);
-        mainMenuItem4.addSubMenu(subMenuItem2);
-        mainMenuItem4.addSubMenu(subMenuItem3);
-    }
-
-    MenuItem mainMenuItem5(String("Строка 5"));
-    {
-        MenuItem subMenuItem1(String("строка 5.1"));
-        MenuItem subMenuItem2(String("Строка 5.2"));
-        MenuItem subMenuItem3(String("СТРОКА 5.3"));
-
-        mainMenuItem5.addSubMenu(subMenuItem1);
-        mainMenuItem5.addSubMenu(subMenuItem2);
-        mainMenuItem5.addSubMenu(subMenuItem3);
-    }
-
     _menu->addItem(mainMenuItem1);
     _menu->addItem(mainMenuItem2);
-    _menu->addItem(mainMenuItem3);
-    _menu->addItem(mainMenuItem4);
-    _menu->addItem(mainMenuItem5);
+}
+
+void Screen::temperatureAction()
+{
+    Serial.println("Screen | temperatureAction");
+    Data::getInstance().setDisplayMenu(Data::DisplayMenu::FUNCTIONAL_SCREEN);
+    Data::getInstance().setDisplayFunctionalScreen(Data::DisplayFunctionalScreen::TEMPERATURE_SENSOR_SCREEN);
 }
 
 void Screen::printInitializeScreen()
@@ -100,10 +83,8 @@ void Screen::printMenu()
         _menu->showMenu();
     else if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::SUB_MENU)
         _menu->showSubMenu();
-    // else if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::FUCTIONAL_MENU)
-    //     _menu->executeMenu();
-    // else
-    //     _menu->showMenu();
+    else if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::FUNCTIONAL_SCREEN)
+        _menu->showFunctionalScreen();
 }
 
 void Screen::showMenu()
@@ -146,5 +127,8 @@ void Screen::movemenuEnter()
     if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
-    _menu->executeMenu();
+    if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::MAIN_MENU)
+        _menu->executeMenu();
+    else if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::SUB_MENU)
+        _menu->executeMenu();
 }

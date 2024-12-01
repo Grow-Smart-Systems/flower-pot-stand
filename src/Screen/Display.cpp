@@ -1,11 +1,11 @@
 #include "Display.h"
 #include "Icons.h"
 #include "fonts/Picopixel.h"
-#include "Fonts/TomThumb.h"
+#include <Wire.h>
 
 Display::Display()
 {
-    _display = std::make_shared<Adafruit_SSD1306>(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+    _display = std::shared_ptr<Adafruit_SSD1306>(new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET));
 }
 
 bool Display::init()
@@ -74,15 +74,31 @@ void Display::printSubMenu(int selectedString, const String& text0, const String
     _display->display();
 }
 
+void Display::printFunctionMenu(bool editMode)
+{
+    _display->clearDisplay();
+    printFrame(false);
+
+    auto& data = Data::getInstance();
+    if (data.getDisplayFunctionalScreen() == Data::DisplayFunctionalScreen::TEMPERATURE_SENSOR_SCREEN)
+    {
+        if (!_functionalScreen)
+            _functionalScreen = std::make_unique<TemperatureSensorScreen>();
+        _functionalScreen->printScreen(_display);
+
+    }
+
+    _display->display();
+}
+
 void Display::dispayOn()
 {
-    //TODO: Сделать реализацию. Скорее всего запуск основного меню или экрана ожидания в зависимости от текущего статуса
+    _display->ssd1306_command(SSD1306_DISPLAYON);
 }
 
 void Display::displayOff()
 {
-    _display->clearDisplay();
-    _display->display();
+    _display->ssd1306_command(SSD1306_DISPLAYOFF);
 }
 
 void Display::printStatusBar()
@@ -98,7 +114,7 @@ void Display::printStatusBar()
     {
         _display->drawBitmap(ICON_POS_1_X, ICON_POS_1_Y, iconDry, ICON_WIDTH, ICON_HEIGHT, SSD1306_WHITE);
     }
-    //TODO: Доделать реализацию. Выводить статус бар с текущим временем и статусом сети
+    //TODO: Доделать реализацию. Выводить статус бар с текущим временем и статусом сети и пр.
 }
 
 void Display::printFrame(bool menuFrame)
@@ -167,4 +183,15 @@ void Display::printMovementTriangles(bool upTriangle, bool downTriangle)
     // Треугольник "вниз"
     if (downTriangle)
         _display->fillTriangle(MT_DOWN_X0, MT_DOWN_Y0, MT_DOWN_X1, MT_DOWN_Y1, MT_DOWN_X2, MT_DOWN_Y2, SSD1306_WHITE);
+}
+
+void Display::printFooter(bool editMode)
+{
+    //TODO: Доделать реализацию. Выводить подвал экрана
+    // режим редактирования меняет оттображаемые кнопки 
+}
+
+void Display::printHeader(String textHeader)
+{
+    //TODO: Доделать реализацию. Выводить заголовок экрана
 }

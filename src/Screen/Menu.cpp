@@ -80,9 +80,18 @@ void Menu::showSubMenu() const
     _menu[_selectedItem].displaySubMenu();
 }
 
+void Menu::showFunctionalScreen() const
+{
+    Data::getInstance().getScreen()->getDisplay()->printFunctionMenu();
+}
+
 void Menu::executeMenu()
 {
-    _menu[_selectedItem].execute();
+    auto& data = Data::getInstance();
+    if (data.getDisplayMenu() == Data::DisplayMenu::MAIN_MENU)
+        _menu[_selectedItem].execute();
+    else if (data.getDisplayMenu() == Data::DisplayMenu::SUB_MENU)
+        _menu[_selectedItem].selectedItemExecute();
 }
 
 void Menu::selectNextItem()

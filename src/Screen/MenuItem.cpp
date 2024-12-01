@@ -14,7 +14,13 @@ void MenuItem::addSubMenu(const MenuItem& item)
 
 void MenuItem::execute()
 {
-    Data::getInstance().setDisplayMenu(Data::DisplayMenu::SUB_MENU);
+    auto& data = Data::getInstance();
+    Serial.println("MenuItem | execute - " + name);
+
+    if (data.getDisplayMenu() == Data::DisplayMenu::MAIN_MENU)
+        data.setDisplayMenu(Data::DisplayMenu::SUB_MENU);
+    else if (data.getDisplayMenu() == Data::DisplayMenu::SUB_MENU)
+        data.setDisplayMenu(Data::DisplayMenu::FUNCTIONAL_SCREEN);
 
     _selectedSubItem = 0;
 
@@ -23,6 +29,11 @@ void MenuItem::execute()
 
     if (!subMenu.empty())
         displaySubMenu();
+}
+
+void MenuItem::selectedItemExecute()
+{
+    subMenu[_selectedSubItem].execute();
 }
 
 void MenuItem::back()
@@ -40,13 +51,13 @@ void MenuItem::displaySubMenu() const
     /// получим текущее положени на странице с учетом того, что на странице 5 пунктов
 
     // количество страниц
-    pagesCount = menuSize / SUB_MENU_ITEMS_SIZE + (menuSize % SUB_MENU_ITEMS_SIZE ? 1 : 0);
+    pagesCount = menuSize * INVERTED_SUB_MENU_ITEMS_SIZE + (menuSize % SUB_MENU_ITEMS_SIZE ? 1 : 0);
 
     // текущее положение на странице
     currentMenuPosition = _selectedSubItem % SUB_MENU_ITEMS_SIZE;
 
     // текущая страница
-    currentPage = _selectedSubItem / SUB_MENU_ITEMS_SIZE;
+    currentPage = _selectedSubItem * INVERTED_SUB_MENU_ITEMS_SIZE;
 
     // отрисуем меню
     Data::getInstance().getScreen()->getDisplay()->printSubMenu(currentMenuPosition,

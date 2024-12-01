@@ -8,15 +8,8 @@
 #include "src/ControlDevices/SerialPortProcessor.h"
 
 /// ===== define ===== //
-
-// ARDUINO LED
-#define PIN_LED 13
-
 /// ===== globals ===== //
 
-// Screen _screen;
-
-// SensorsData _data;
 Data& data = Data::getInstance();
 
 SerialPortProcessor _serialPortProcessor;
@@ -48,8 +41,6 @@ void setup(void)
     // Sensors
     std::shared_ptr<SensorsData> _sensorsData = std::make_shared<SensorsData>();
     data.setSensorsData(_sensorsData);
-
-    //pinMode(PIN_LED, OUTPUT);
 
     delay(3000);
     Serial.println(F("Start menu ..."));

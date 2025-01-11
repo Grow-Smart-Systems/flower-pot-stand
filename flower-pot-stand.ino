@@ -5,14 +5,14 @@
 #include "src/Sensors/SensorData.h"
 #include "src/Utils/Timer.h"
 #include "src/Common/Data.h"
-#include "src/ControlDevices/SerialPortProcessor.h"
+#include "src/ControlDevices/ControlDevices.h"
 
 /// ===== define ===== //
 /// ===== globals ===== //
 
 Data& data = Data::getInstance();
 
-SerialPortProcessor _serialPortProcessor;
+ControlDevices _controlDevices;
 
 Timer _sensorsTimer;
 Timer _screenTimer;
@@ -62,8 +62,5 @@ void loop(void)
         data.getScreen()->printMenu();
     }
 
-    if (Serial.available())
-    {
-        _serialPortProcessor.process(Serial.readString());
-    }
+    _controlDevices.LoopIteration();
 }

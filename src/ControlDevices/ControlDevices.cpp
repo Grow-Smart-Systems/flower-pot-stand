@@ -19,13 +19,13 @@ void ControlDevices::LoopIteration()
         switch (key)
         {
         case AdKeyboardDevice::Buttons::BUTTON_1:
-            _serialPortProcessor->process("UP");
+            _serialPortProcessor->process("BACK");
             break;
         case AdKeyboardDevice::Buttons::BUTTON_2:
-            _serialPortProcessor->process("DOWN");
+            _serialPortProcessor->process("UP");
             break;
         case AdKeyboardDevice::Buttons::BUTTON_3:
-            _serialPortProcessor->process("BACK");
+            _serialPortProcessor->process("DOWN");
             break;
         case AdKeyboardDevice::Buttons::BUTTON_4:
             _serialPortProcessor->process("ENTER");

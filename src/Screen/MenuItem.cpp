@@ -22,6 +22,10 @@ void MenuItem::execute()
     else if (data.getDisplayMenu() == Data::DisplayMenu::SUB_MENU)
         data.setDisplayMenu(Data::DisplayMenu::FUNCTIONAL_SCREEN);
 
+    Serial.println(String("DisplayMenu = ") + (data.getDisplayMenu() == Data::DisplayMenu::MAIN_MENU ? "MAIN_MENU"
+        : (data.getDisplayMenu() == Data::DisplayMenu::SUB_MENU ? "SUB_MENU" : "FUNCTIONAL_SCREEN")));
+
+
     _selectedSubItem = 0;
 
     if (action)

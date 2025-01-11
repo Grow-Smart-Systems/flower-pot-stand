@@ -8,7 +8,8 @@
 #include <Adafruit_SSD1306.h>
 
 #include "DisplayDefines.h"
-#include "BaseFunctionalScreen.h"
+#include "BaseFunctionalScreens/BaseFunctionalScreen.h"
+#include "BaseFunctionalScreens/TemperatureSensorScreen.h"
 #include "../Common/Data.h"
 
 class Display
@@ -71,5 +72,5 @@ private:
     /// @brief Экземпляр дисплея объекта для SSD1306 с разрешением 128x64, с использованием аппаратного I2C.
     std::shared_ptr<Adafruit_SSD1306> _display{ nullptr };
 
-    std::unique_ptr<BaseFunctionalScreen> _functionalScreen{ nullptr };
+    std::shared_ptr<BaseFunctionalScreen> _functionalScreen{ nullptr };
 };

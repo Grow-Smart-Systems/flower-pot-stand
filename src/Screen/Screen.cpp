@@ -115,10 +115,15 @@ void Screen::movemenuDown()
 void Screen::movemenuBack()
 {
     Serial.println("Screen | movemenuBack");
-    if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
+    auto& data = Data::getInstance();
+
+    if (data.getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
-    Data::getInstance().setDisplayMenu(Data::DisplayMenu::MAIN_MENU);
+    if (data.getDisplayMenu() == Data::DisplayMenu::SUB_MENU)
+        data.setDisplayMenu(Data::DisplayMenu::MAIN_MENU);
+    else if (data.getDisplayMenu() == Data::DisplayMenu::FUNCTIONAL_SCREEN)
+        data.setDisplayMenu(Data::DisplayMenu::SUB_MENU);
 }
 
 void Screen::movemenuEnter()

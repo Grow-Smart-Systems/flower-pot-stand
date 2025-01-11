@@ -32,4 +32,11 @@ public:
 private:
     int getKey(int value);
 
+    Buttons _lastButton{ Buttons::UNDEFINED };
+
+    unsigned long _lastPressTime{ 0 };
+
+    // Задержка для устранения дребезга
+    const unsigned long _debounceDelay{ 1000 };
+
 };

@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <memory>
 
-#include "src/Screen/Screen.h"
-#include "src/Sensors/SensorData.h"
-#include "src/Utils/Timer.h"
-#include "src/Common/Data.h"
-#include "src/ControlDevices/ControlDevices.h"
+#include "Screen/Screen.h"
+#include "Sensors/SensorData.h"
+#include "Utils/Timer.h"
+#include "Common/Data.h"
+#include "ControlDevices/ControlDevices.h"
 
 /// ===== define ===== //
 /// ===== globals ===== //

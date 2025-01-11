@@ -1,7 +1,9 @@
 #include "Display.h"
 #include "Icons.h"
 #include "fonts/Picopixel.h"
+#include "BaseFunctionalScreens/TemperatureSensorScreen.h"
 #include <Wire.h>
+
 
 Display::Display()
 {
@@ -83,7 +85,7 @@ void Display::printFunctionMenu(bool editMode)
     if (data.getDisplayFunctionalScreen() == Data::DisplayFunctionalScreen::TEMPERATURE_SENSOR_SCREEN)
     {
         if (!_functionalScreen)
-            _functionalScreen = std::make_unique<TemperatureSensorScreen>();
+            _functionalScreen = std::make_shared<TemperatureSensorScreen>();
         _functionalScreen->printScreen(_display);
 
     }

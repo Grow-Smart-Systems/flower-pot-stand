@@ -1,3 +1,5 @@
 # Ignore Visual Studio Code files and folders
 .vscode
 
+# PlatformIO
+.pio

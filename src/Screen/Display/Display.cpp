@@ -1,7 +1,6 @@
 #include "Display.h"
 #include "Icons.h"
 #include "fonts/Picopixel.h"
-#include "BaseFunctionalScreens/TemperatureSensorScreen.h"
 #include <Wire.h>
 
 
@@ -83,12 +82,13 @@ void Display::printFunctionMenu(bool editMode)
 
     auto& data = Data::getInstance();
     if (data.getDisplayFunctionalScreen() == Data::DisplayFunctionalScreen::TEMPERATURE_SENSOR_SCREEN)
-    {
-        if (!_functionalScreen)
-            _functionalScreen = std::make_shared<TemperatureSensorScreen>();
-        _functionalScreen->printScreen(_display);
+        _functionalScreen = std::make_shared<TemperatureSensorScreen>(_display);
+    else
+        _functionalScreen = std::make_shared<BaseFunctionalScreen>(_display);
 
-    }
+    _functionalScreen->printScreen();
+    _functionalScreen->printFooter();
+    _functionalScreen->printHeader();
 
     _display->display();
 }
@@ -185,15 +185,4 @@ void Display::printMovementTriangles(bool upTriangle, bool downTriangle)
     // Треугольник "вниз"
     if (downTriangle)
         _display->fillTriangle(MT_DOWN_X0, MT_DOWN_Y0, MT_DOWN_X1, MT_DOWN_Y1, MT_DOWN_X2, MT_DOWN_Y2, SSD1306_WHITE);
-}
-
-void Display::printFooter(bool editMode)
-{
-    //TODO: Доделать реализацию. Выводить подвал экрана
-    // режим редактирования меняет оттображаемые кнопки 
-}
-
-void Display::printHeader(String textHeader)
-{
-    //TODO: Доделать реализацию. Выводить заголовок экрана
 }

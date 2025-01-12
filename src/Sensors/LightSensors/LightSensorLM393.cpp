@@ -1,14 +1,6 @@
-#include "LightSensor.h"
+#include "LightSensorLM393.h"
 
-void LightSensor::getData(SensorsData& data)
-{
-    data.lux = getLightCoef();
-    data.isDark = getIsDarkFlag();
-}
-
-/// =========== LM393 =========== ///
-#if LIGHT_SENSOR == LM393
-    // light sensor pins
+// light sensor pins
 #define PIN_ANALOG_PHOTO_SENSOR     GPIO35
 
 
@@ -32,4 +24,3 @@ void LightSensorLM393::getData(SensorsData& data)
     data.lux = getLightCoef();
     data.isDark = getIsDarkFlag();
 }
-#endif

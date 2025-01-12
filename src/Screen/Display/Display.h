@@ -8,9 +8,9 @@
 #include <Adafruit_SSD1306.h>
 
 #include "DisplayDefines.h"
-#include "BaseFunctionalScreens/BaseFunctionalScreen.h"
-#include "BaseFunctionalScreens/TemperatureSensorScreen.h"
-#include "../Common/Data.h"
+#include "FunctionalScreens/BaseFunctionalScreen.h"
+#include "FunctionalScreens/TemperatureSensorScreen.h"
+#include "../../Common/Data.h"
 
 class Display
 {

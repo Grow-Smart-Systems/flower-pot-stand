@@ -9,7 +9,7 @@
 
 #include "../Sensors/SensorData.h"
 #include "../Common/Data.h"
-#include "Menu.h"
+#include "Menu/Menu.h"
 
 class SensorsData;
 class Display;
@@ -51,5 +51,5 @@ private:
     /// @brief Экземпляр дисплея объекта для SSD1306 с разрешением 128x64, с использованием аппаратного I2C.
     std::shared_ptr<Display> _display{ nullptr };
 
-    std::shared_ptr<Menu> _menu{ nullptr };
+    std::shared_ptr<Menu> _rootMenu{ nullptr };
 };

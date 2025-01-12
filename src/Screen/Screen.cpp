@@ -3,6 +3,7 @@
 Screen::Screen()
 {
     _display = std::make_shared<Display>();
+    _rootMenu = std::make_shared<Menu>(_display);
 }
 
 bool Screen::init()
@@ -22,44 +23,51 @@ void Screen::initMenu()
     Data::getInstance().setDisplayMode(Data::DisplayMode::MENU_MODE);
     Data::getInstance().setDisplayMenu(Data::DisplayMenu::MAIN_MENU);
 
-    _menu = std::make_shared<Menu>(_display);
+    _rootMenu = std::make_shared<Menu>();
 
-    MenuItem SensorsMenuItem("Sensors");
-    {
-        MenuItem TemperatureMenuItem("Temperature", std::bind(&Screen::temperatureAction, this));
-        MenuItem HumidityMenuItem("Humidity");
-        MenuItem LuxMenuItem("Lux");
+    // MenuItem SensorsMenuItem("Sensors");
+    // {
+    //     MenuItem TemperatureMenuItem("Temperature", std::bind(&Screen::temperatureAction, this));
+    //     {
+    //         MenuItem TemperatureSensorDHT11MenuItem("DHT11");
+    //         MenuItem TemperatureSensorDHT22MenuItem("DHT22");
 
-        SensorsMenuItem.addSubMenu(TemperatureMenuItem);
-        SensorsMenuItem.addSubMenu(HumidityMenuItem);
-        SensorsMenuItem.addSubMenu(LuxMenuItem);
-    }
-    _menu->addItem(SensorsMenuItem);
+    //         TemperatureMenuItem.addSubMenu(TemperatureSensorDHT11MenuItem);
+    //         TemperatureMenuItem.addSubMenu(TemperatureSensorDHT22MenuItem);
+    //     }
+    //     MenuItem HumidityMenuItem("Humidity");
+    //     MenuItem LuxMenuItem("Lux");
 
-    MenuItem mainMenuItem1("Item 1");
-    {
-        MenuItem subMenuItem1("SubItem 1.1");
-        MenuItem subMenuItem2("SubItem 1.2");
-        MenuItem subMenuItem3("SubItem 1.3");
+    //     SensorsMenuItem.addSubMenu(TemperatureMenuItem);
+    //     SensorsMenuItem.addSubMenu(HumidityMenuItem);
+    //     SensorsMenuItem.addSubMenu(LuxMenuItem);
+    // }
+    // _menu->addItem(SensorsMenuItem);
 
-        mainMenuItem1.addSubMenu(subMenuItem1);
-        mainMenuItem1.addSubMenu(subMenuItem2);
-        mainMenuItem1.addSubMenu(subMenuItem3);
-    }
+    // MenuItem mainMenuItem1("Item 1");
+    // {
+    //     MenuItem subMenuItem1("SubItem 1.1");
+    //     MenuItem subMenuItem2("SubItem 1.2");
+    //     MenuItem subMenuItem3("SubItem 1.3");
 
-    MenuItem mainMenuItem2("Item 2");
-    {
-        MenuItem subMenuItem1("SubItem 2.1");
-        MenuItem subMenuItem2("SubItem 2.2");
-        MenuItem subMenuItem3("SubItem 2.3");
+    //     mainMenuItem1.addSubMenu(subMenuItem1);
+    //     mainMenuItem1.addSubMenu(subMenuItem2);
+    //     mainMenuItem1.addSubMenu(subMenuItem3);
+    // }
 
-        mainMenuItem2.addSubMenu(subMenuItem1);
-        mainMenuItem2.addSubMenu(subMenuItem2);
-        mainMenuItem2.addSubMenu(subMenuItem3);
-    }
+    // MenuItem mainMenuItem2("Item 2");
+    // {
+    //     MenuItem subMenuItem1("SubItem 2.1");
+    //     MenuItem subMenuItem2("SubItem 2.2");
+    //     MenuItem subMenuItem3("SubItem 2.3");
 
-    _menu->addItem(mainMenuItem1);
-    _menu->addItem(mainMenuItem2);
+    //     mainMenuItem2.addSubMenu(subMenuItem1);
+    //     mainMenuItem2.addSubMenu(subMenuItem2);
+    //     mainMenuItem2.addSubMenu(subMenuItem3);
+    // }
+
+    // _menu->addItem(mainMenuItem1);
+    // _menu->addItem(mainMenuItem2);
 }
 
 void Screen::temperatureAction()
@@ -72,6 +80,7 @@ void Screen::temperatureAction()
 void Screen::printInitializeScreen()
 {
     _display->dispayOn();
+    //TODO: Что-то красивое нарисовать
 }
 
 void Screen::printMenu()
@@ -79,12 +88,31 @@ void Screen::printMenu()
     if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
-    if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::MAIN_MENU)
-        _menu->showMenu();
-    else if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::SUB_MENU)
-        _menu->showSubMenu();
-    else if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::FUNCTIONAL_SCREEN)
-        _menu->showFunctionalScreen();
+    std::function<std::shared_ptr<Menu>(std::shared_ptr<Menu>)> getCurrentMenu = [&](std::shared_ptr<Menu> menu) -> std::shared_ptr<Menu>
+        {
+            if (menu->IsExecuted())
+                return menu->GetSelectedItem().GetItemMenu();
+            return menu;
+        };
+
+    std::shared_ptr<Menu> currentMenu = getCurrentMenu(_rootMenu);
+    while (currentMenu->IsExecuted())
+    {
+        currentMenu = getCurrentMenu(currentMenu);
+    }
+
+    if (currentMenu->GetDisplayMenu() == Data::DisplayMenu::MAIN_MENU)
+    {
+        //_display->printMainMenu(currentMenu->GetSelectedItem().GetName());
+    }
+    else if (currentMenu->GetDisplayMenu() == Data::DisplayMenu::SUB_MENU)
+    {
+        //_display->printSubMenu(currentMenu->GetSelectedItem().GetName());
+    }
+    else if (currentMenu->GetDisplayMenu() == Data::DisplayMenu::FUNCTIONAL_SCREEN)
+    {
+        //_display->printFunctionMenu();
+    }
 }
 
 void Screen::showMenu()
@@ -100,7 +128,7 @@ void Screen::movemenuUp()
     if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
-    _menu->selectPreviousItem();
+    _menu->SelectPreviousItem();
 }
 
 void Screen::movemenuDown()
@@ -109,21 +137,16 @@ void Screen::movemenuDown()
     if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
-    _menu->selectNextItem();
+    _menu->SelectNextItem();
 }
 
 void Screen::movemenuBack()
 {
     Serial.println("Screen | movemenuBack");
-    auto& data = Data::getInstance();
-
-    if (data.getDisplayMode() != Data::DisplayMode::MENU_MODE)
+    if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
-    if (data.getDisplayMenu() == Data::DisplayMenu::SUB_MENU)
-        data.setDisplayMenu(Data::DisplayMenu::MAIN_MENU);
-    else if (data.getDisplayMenu() == Data::DisplayMenu::FUNCTIONAL_SCREEN)
-        data.setDisplayMenu(Data::DisplayMenu::SUB_MENU);
+    _menu->Back();
 }
 
 void Screen::movemenuEnter()
@@ -132,8 +155,5 @@ void Screen::movemenuEnter()
     if (Data::getInstance().getDisplayMode() != Data::DisplayMode::MENU_MODE)
         return;
 
-    if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::MAIN_MENU)
-        _menu->executeMenu();
-    else if (Data::getInstance().getDisplayMenu() == Data::DisplayMenu::SUB_MENU)
-        _menu->executeMenu();
+    _menu->ExecuteMenu();
 }

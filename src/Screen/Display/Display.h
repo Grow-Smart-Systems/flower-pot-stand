@@ -12,7 +12,7 @@
 #include "FunctionalScreens/TemperatureSensorScreen.h"
 #include "../../Common/Data.h"
 
-class Display
+class Display final
 {
 public:
     Display();
@@ -21,7 +21,7 @@ public:
 
     /// @brief Инициализация экрана
     /// @return true - успешно, false - ошибка
-    bool init();
+    bool Init();
 
     /// @brief Печать начального меню на экране
     /// @param selectedString Выбранная строка
@@ -30,7 +30,12 @@ public:
     /// @param text0 Текст строки 0 меню
     /// @param text1 Текст строки 1 меню
     /// @param text2 Текст строки 2 меню
-    void printMainMenu(int selectedString, bool upTriangle, bool downTriangle, const String& text0, const String& text1 = "", const String& text2 = "");
+    void PrintMainMenu(int selectedString,
+                       bool upTriangle,
+                       bool downTriangle,
+                       const std::string& text0,
+                       const std::string& text1 = "",
+                       const std::string& text2 = "");
 
     /// @brief Печать подменю на экране
     /// @param selectedString Выбранная строка
@@ -40,19 +45,25 @@ public:
     /// @param text3 Текст строки 3 меню
     /// @param text4 Текст строки 4 меню
     /// @param text5 Текст строки 5 меню
-    void printSubMenu(int selectedString, const String& text0, const String& text1 = "", const String& text2 = "", const String& text3 = "", const String& text4 = "", const String& text5 = "");
+    void PrintSubMenu(int selectedString,
+                      const std::string& text0,
+                      const std::string& text1 = "",
+                      const std::string& text2 = "",
+                      const std::string& text3 = "",
+                      const std::string& text4 = "",
+                      const std::string& text5 = "");
 
     //
-    void printFunctionMenu(bool editMode = false);
+    void PrintFunctionMenu(bool editMode = false);
 
-    void printInitializeScreen();
+    void PrintInitializeScreen();
 
-    void dispayOn();
+    void DispayOn();
 
-    void displayOff();
+    void DisplayOff();
 
-private:
-    enum SELECTED_STATUS
+protected:
+    enum class SELECTED_STATUS
     {
         SELECTED,
         UNSELECTED
@@ -62,16 +73,17 @@ private:
 
     void printFrame(bool menuFrame = false);
 
-    void printMainMenuString(String text, uint8_t x, uint8_t y, SELECTED_STATUS status);
+    void printMainMenuString(const std::string& text, uint8_t x, uint8_t y, SELECTED_STATUS status);
 
-    void printSubMenuString(String text, uint8_t x, uint8_t y, SELECTED_STATUS status);
+    void printSubMenuString(const std::string& text, uint8_t x, uint8_t y, SELECTED_STATUS status);
 
     void printMovementTriangles(bool upTriangle = false, bool downTriangle = false);
 
     void printFooter(bool editMode = false);
 
-    void printHeader(String textHeader);
+    void printHeader(const std::string& textHeader);
 
+private:
     /// @brief Экземпляр дисплея объекта для SSD1306 с разрешением 128x64, с использованием аппаратного I2C.
     std::shared_ptr<Adafruit_SSD1306> _display {nullptr};
 

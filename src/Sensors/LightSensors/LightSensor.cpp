@@ -1,7 +1,6 @@
 #include "LightSensor.h"
 
-void LightSensor::getData(SensorsData& data)
+void LightSensor::SetDataIn(SensorsDataContainer& container)
 {
-    data.lux = getLightCoef();
-    data.isDark = getIsDarkFlag();
+    container.lux = GetLightCoef();
 }

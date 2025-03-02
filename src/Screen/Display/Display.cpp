@@ -6,10 +6,13 @@
 
 Display::Display()
 {
-    _display = std::shared_ptr<Adafruit_SSD1306>(new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET));
+    _display = std::shared_ptr<Adafruit_SSD1306>(new Adafruit_SSD1306(SCREEN_WIDTH,
+                                                                      SCREEN_HEIGHT,
+                                                                      &Wire,
+                                                                      OLED_RESET));
 }
 
-bool Display::init()
+bool Display::Init()
 {
     Serial.println("Screen | Display init");
     if (!_display)
@@ -26,19 +29,33 @@ bool Display::init()
     return true;
 }
 
-void Display::printMainMenu(int selectedString, bool upTriangle, bool downTriangle, const String& text0, const String& text1, const String& text2)
+void Display::PrintMainMenu(int selectedString,
+                            bool upTriangle,
+                            bool downTriangle,
+                            const std::string& text0,
+                            const std::string& text1,
+                            const std::string& text2)
 {
     _display->clearDisplay();
 
     printFrame(false);
 
-    printMainMenuString(text0, MM_STRING_0_X, MM_STRING_0_Y, selectedString == 0 ? SELECTED : UNSELECTED);
+    printMainMenuString(text0,
+                        MM_STRING_0_X,
+                        MM_STRING_0_Y,
+                        selectedString == 0 ? SELECTED_STATUS::SELECTED : SELECTED_STATUS::UNSELECTED);
 
-    if (text1 != "")
-        printMainMenuString(text1, MM_STRING_1_X, MM_STRING_1_Y, selectedString == 1 ? SELECTED : UNSELECTED);
+    if (!text1.empty())
+        printMainMenuString(text1,
+                            MM_STRING_1_X,
+                            MM_STRING_1_Y,
+                            selectedString == 1 ? SELECTED_STATUS::SELECTED : SELECTED_STATUS::UNSELECTED);
 
-    if (text2 != "")
-        printMainMenuString(text2, MM_STRING_2_X, MM_STRING_2_Y, selectedString == 2 ? SELECTED : UNSELECTED);
+    if (!text2.empty())
+        printMainMenuString(text2,
+                            MM_STRING_2_X,
+                            MM_STRING_2_Y,
+                            selectedString == 2 ? SELECTED_STATUS::SELECTED : SELECTED_STATUS::UNSELECTED);
 
     printMovementTriangles(upTriangle, downTriangle);
 
@@ -47,41 +64,53 @@ void Display::printMainMenu(int selectedString, bool upTriangle, bool downTriang
     _display->display();
 }
 
-void Display::printSubMenu(int selectedString, const String& text0, const String& text1, const String& text2, const String& text3, const String& text4, const String& text5)
+void Display::PrintSubMenu(int selectedString,
+                           const std::string& text0,
+                           const std::string& text1,
+                           const std::string& text2,
+                           const std::string& text3,
+                           const std::string& text4,
+                           const std::string& text5)
 {
     _display->clearDisplay();
 
     printFrame(true);
 
-    printSubMenuString(text0, SM_STRING_X, SM_STRING_0, selectedString == 0 ? SELECTED : UNSELECTED);
+    printSubMenuString(text0, SM_STRING_X, SM_STRING_0,
+        selectedString == 0 ? SELECTED_STATUS::SELECTED : SELECTED_STATUS::UNSELECTED);
 
-    if (text1 != "")
-        printSubMenuString(text1, SM_STRING_X, SM_STRING_1, selectedString == 1 ? SELECTED : UNSELECTED);
+    if (!text1.empty())
+        printSubMenuString(text1, SM_STRING_X, SM_STRING_1,
+            selectedString == 1 ? SELECTED_STATUS::SELECTED : SELECTED_STATUS::UNSELECTED);
 
-    if (text2 != "")
-        printSubMenuString(text2, SM_STRING_X, SM_STRING_2, selectedString == 2 ? SELECTED : UNSELECTED);
+    if (!text2.empty())
+        printSubMenuString(text2, SM_STRING_X, SM_STRING_2,
+            selectedString == 2 ? SELECTED_STATUS::SELECTED : SELECTED_STATUS::UNSELECTED);
 
-    if (text3 != "")
-        printSubMenuString(text3, SM_STRING_X, SM_STRING_3, selectedString == 3 ? SELECTED : UNSELECTED);
+    if (!text3.empty())
+        printSubMenuString(text3, SM_STRING_X, SM_STRING_3,
+            selectedString == 3 ? SELECTED_STATUS::SELECTED : SELECTED_STATUS::UNSELECTED);
 
-    if (text4 != "")
-        printSubMenuString(text4, SM_STRING_X, SM_STRING_4, selectedString == 4 ? SELECTED : UNSELECTED);
+    if (!text4.empty())
+        printSubMenuString(text4, SM_STRING_X, SM_STRING_4,
+            selectedString == 4 ? SELECTED_STATUS::SELECTED : SELECTED_STATUS::UNSELECTED);
 
-    if (text5 != "")
-        printSubMenuString(text5, SM_STRING_X, SM_STRING_5, selectedString == 5 ? SELECTED : UNSELECTED);
+    if (!text5.empty())
+        printSubMenuString(text5, SM_STRING_X, SM_STRING_5,
+            selectedString == 5 ? SELECTED_STATUS::SELECTED : SELECTED_STATUS::UNSELECTED);
 
     printStatusBar();
 
     _display->display();
 }
 
-void Display::printFunctionMenu(bool editMode)
+void Display::PrintFunctionMenu(bool editMode)
 {
     _display->clearDisplay();
     printFrame(false);
 
-    auto& data = Data::getInstance();
-    if (data.getDisplayFunctionalScreen() == Data::DisplayFunctionalScreen::TEMPERATURE_SENSOR_SCREEN)
+    auto& data = Data::GetInstance();
+    if (data.GetDisplayFunctionalScreen() == DisplayFunctionalScreen::TEMPERATURE_SENSOR_SCREEN)
         _functionalScreen = std::make_shared<TemperatureSensorScreen>(_display);
     else
         _functionalScreen = std::make_shared<BaseFunctionalScreen>(_display);
@@ -93,7 +122,7 @@ void Display::printFunctionMenu(bool editMode)
     _display->display();
 }
 
-void Display::printInitializeScreen()
+void Display::PrintInitializeScreen()
 {
     _display->clearDisplay();
     _display->setFont(&Picopixel);
@@ -112,26 +141,26 @@ void Display::printInitializeScreen()
     _display->display();
 }
 
-void Display::dispayOn()
+void Display::DispayOn()
 {
     _display->ssd1306_command(SSD1306_DISPLAYON);
 }
 
-void Display::displayOff()
+void Display::DisplayOff()
 {
     _display->ssd1306_command(SSD1306_DISPLAYOFF);
 }
 
 void Display::printStatusBar()
 {
-    auto& data = Data::getInstance();
+    auto& data = Data::GetInstance();
 
     //Влажность
-    if (data.getHumidityStatus() == Data::HumidityStatus::HIGH_HUMIDITY)
+    if (data.GetHumidityStatus() == HumidityStatus::HIGH_HUMIDITY)
     {
         _display->drawBitmap(ICON_POS_1_X, ICON_POS_1_Y, iconWet, ICON_WIDTH, ICON_HEIGHT, SSD1306_WHITE);
     }
-    else if (data.getHumidityStatus() == Data::HumidityStatus::LOW_HUMIDITY)
+    else if (data.GetHumidityStatus() == HumidityStatus::LOW_HUMIDITY)
     {
         _display->drawBitmap(ICON_POS_1_X, ICON_POS_1_Y, iconDry, ICON_WIDTH, ICON_HEIGHT, SSD1306_WHITE);
     }
@@ -146,9 +175,9 @@ void Display::printFrame(bool menuFrame)
         _display->drawRoundRect(SM_FRAME_X, 0, SM_FRAME_WIDTH, SM_FRAME_HEIGHT, SM_FRAME_RADIUS, SSD1306_WHITE);
 }
 
-void Display::printMainMenuString(String text, uint8_t x, uint8_t y, SELECTED_STATUS status = UNSELECTED)
+void Display::printMainMenuString(const std::string& text, uint8_t x, uint8_t y, SELECTED_STATUS status)
 {
-    if (status == UNSELECTED)
+    if (status == SELECTED_STATUS::UNSELECTED)
     {
         //Общая рамка
         _display->drawRoundRect(x, y, MM_COMMON_FRAME_WIDTH, MM_FRAME_HEIGHT, MM_COMMON_FRAME_RADIUS, SSD1306_WHITE);
@@ -175,14 +204,15 @@ void Display::printMainMenuString(String text, uint8_t x, uint8_t y, SELECTED_ST
     _display->setCursor(x + MM_TEXT_X_OFFSET, y + MM_TEXT_Y_OFFSET);
     _display->setFont(&Picopixel);
     _display->setTextSize(1);
-    _display->setTextColor(status == SELECTED ? SSD1306_BLACK : SSD1306_WHITE);
-    _display->print(text);
+    _display->setTextColor(status == SELECTED_STATUS::SELECTED ? SSD1306_BLACK : SSD1306_WHITE);
+    _display->print(text.c_str());
 }
 
-void Display::printSubMenuString(String text, uint8_t x, uint8_t y, SELECTED_STATUS status)
+
+void Display::printSubMenuString(const std::string& text, uint8_t x, uint8_t y, SELECTED_STATUS status)
 {
     //Общая рамка
-    if (status == SELECTED)
+    if (status == SELECTED_STATUS::SELECTED)
     {
         _display->fillRoundRect(x - SM_FRAME_X_OFFSET, y - SM_FRAME_Y_OFFSET, SM_STRING_FRAME_WIDTH, SM_STRING_FRAME_HEIGHT, FRAME_SUB_MENU_RADIUS, SSD1306_WHITE);
     }
@@ -191,8 +221,8 @@ void Display::printSubMenuString(String text, uint8_t x, uint8_t y, SELECTED_STA
     _display->setCursor(x, y);
     _display->setFont(&Picopixel);
     _display->setTextSize(1);
-    _display->setTextColor(status == SELECTED ? SSD1306_BLACK : SSD1306_WHITE);
-    _display->print(text);
+    _display->setTextColor(status == SELECTED_STATUS::SELECTED ? SSD1306_BLACK : SSD1306_WHITE);
+    _display->print(text.c_str());
 }
 
 void Display::printMovementTriangles(bool upTriangle, bool downTriangle)
@@ -204,4 +234,9 @@ void Display::printMovementTriangles(bool upTriangle, bool downTriangle)
     // Треугольник "вниз"
     if (downTriangle)
         _display->fillTriangle(MT_DOWN_X0, MT_DOWN_Y0, MT_DOWN_X1, MT_DOWN_Y1, MT_DOWN_X2, MT_DOWN_Y2, SSD1306_WHITE);
+}
+
+void Display::printHeader(const std::string& textHeader)
+{
+
 }

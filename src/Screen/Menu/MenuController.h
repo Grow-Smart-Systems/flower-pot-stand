@@ -2,50 +2,65 @@
 
 #include <Arduino.h>
 #include <memory>
-#include "../../Common/Data.h"
-
-#define SUB_MENU_ITEMS_SIZE 5
+#include <vector>
+#include "../../Common/Containers/MenuInfoContainer.h"
 
 class Menu;
+class Display;
 
-class MenuController
+
+/// @brief Класс контроллера меню
+class MenuController final
 {
-    const float INVERTED_SUB_MENU_ITEMS_SIZE {1.0f / 5.0f};
-
 public:
+    /// @brief Конструктор
     MenuController();
 
+    /// @brief Деструктор
     ~MenuController() = default;
 
-    void DisplayMenu();
+    /// @brief Передает информацию о текущем меню
+    /// @return Контейнер информации о меню
+    const MenuInfoContainer& GetDisplayInfo();
 
+    /// @brief Возвращает корневое меню
+    /// @return Указатель на корневое меню
     std::shared_ptr<Menu> GetRootMenu() const;
 
-    std::shared_ptr<Menu> CreateMenuItem(const String& name,
+    /// @brief Создает новый пункт меню
+    /// @param name Имя пункта меню
+    /// @param parentMenu Родительское меню
+    /// @param action Действие пункта меню
+    /// @return Указатель на новое меню
+    std::shared_ptr<Menu> CreateMenuItem(const std::string& name,
                                          std::shared_ptr<Menu> parentMenu,
                                          std::function<void()> action = nullptr);
 
+    /// @brief Переход к корневому меню
     void GotoRootMenu();
 
     // MOVEMENT SECTION //
 
+    /// @brief Перемещение вверх по меню
     void NavigateUp();
 
+    /// @brief Перемещение вниз по меню
     void NavigateDown();
 
+    /// @brief Выбор пункта меню
     void SelectOption();
 
+    /// @brief Возврат назад
     void Back();
 
-protected:
-
-    void displayMainMenu();
-
-    void displaySubMenu();
-
-    void displayFunctionMenu();
+    // MOVEMENT SECTION END //
 
 private:
+    /// @brief Указатель на корневое меню
     std::shared_ptr<Menu> _rootMenu {nullptr};
+
+    /// @brief Указатель на текущее меню
     std::shared_ptr<Menu> _currentMenu {nullptr};
+
+    MenuInfoContainer _menuInfoContainer;
 };

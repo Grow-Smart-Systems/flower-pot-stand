@@ -1,4 +1,5 @@
 #include "TemperatureSensorDHT11.h"
+#include "../../ESP32_defines.h"
 
 TemperatureSensorDHT11::TemperatureSensorDHT11()
     : _dht(PIN_TEMPERATURE_SENSOR, DHTTYPE)
@@ -6,12 +7,12 @@ TemperatureSensorDHT11::TemperatureSensorDHT11()
     _dht.begin();
 }
 
-float TemperatureSensorDHT11::getTemperature()
+float TemperatureSensorDHT11::GetTemperature()
 {
     return _dht.readTemperature();
 }
 
-float TemperatureSensorDHT11::getHumidity()
+float TemperatureSensorDHT11::GetHumidity()
 {
     return _dht.readHumidity();
 }

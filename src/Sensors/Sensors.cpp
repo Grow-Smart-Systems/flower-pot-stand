@@ -1,4 +1,4 @@
-#include "SensorData.h"
+#include "Sensors.h"
 
 #if TEMPERATURE_SENSOR == SENSOR_DHT11
 #include "TemperatureSensors/TemperatureSensorDHT11.h"
@@ -9,7 +9,7 @@
 #endif
 
 
-SensorsData::SensorsData()
+Sensors::Sensors()
 {
 
 #if LIGHT_SENSOR == SENSOR_LM393
@@ -21,7 +21,7 @@ SensorsData::SensorsData()
 #endif
 }
 
-SensorsData::~SensorsData()
+Sensors::~Sensors()
 {
     if (_lightSensor)
         delete _lightSensor;
@@ -30,8 +30,13 @@ SensorsData::~SensorsData()
         delete _temperatureSensor;
 }
 
-void SensorsData::update()
+const SensorsDataContainer& Sensors::GetSensorInfo()
 {
-    _lightSensor->getData(*this);
-    _temperatureSensor->getData(*this);
+    return _dataContainer;
+}
+
+void Sensors::Update()
+{
+    _temperatureSensor->SetDataIn(_dataContainer);
+    _lightSensor->SetDataIn(_dataContainer);
 }

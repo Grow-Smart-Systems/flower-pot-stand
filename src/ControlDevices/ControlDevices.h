@@ -4,11 +4,11 @@
 #include <memory>
 
 #include "SerialPortProcessor.h"
-#include "AdKeyboradDevice.h"
+#include "AdKeyboardDevice.h"
 #include "../Utils/Timer.h"
 
 
-class ControlDevices
+class ControlDevices final
 {
     using Buttons = AdKeyboardDevice::Buttons;
 

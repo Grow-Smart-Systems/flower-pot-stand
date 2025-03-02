@@ -1,4 +1,4 @@
-#include "AdKeyboradDevice.h"
+#include "AdKeyboardDevice.h"
 
 AdKeyboardDevice::Buttons AdKeyboardDevice::readButtons()
 {
@@ -12,7 +12,7 @@ AdKeyboardDevice::Buttons AdKeyboardDevice::readButtons()
             auto button = Buttons(keyIndex);
             if (button != Buttons::UNDEFINED)
             {
-                if (button != _lastButton || (currentTime - _lastPressTime) > _debounceDelay)
+                if (button != _lastButton || ((currentTime - _lastPressTime) > _debounceDelay && currentTime >= _lastPressTime))
                 {
                     _lastButton = button;
                     _lastPressTime = currentTime;
@@ -26,11 +26,15 @@ AdKeyboardDevice::Buttons AdKeyboardDevice::readButtons()
 
 int AdKeyboardDevice::getKey(int value)
 {
+    const int thresholds[KEYS_COUNT] = {50, 500, 1200, 2000, 2800};
     for (int i = 0; i < KEYS_COUNT; ++i)
     {
-        //если измеренное значение попало в диапазон между референсными значениями, выводим номер диапазона
-        if (value < _buttonValues[i])
+        int lowerBound = (i == 0) ? 0 : (thresholds[i - 1] + thresholds[i]) / 2;
+        int upperBound = thresholds[i];
+        if (value >= lowerBound && value < upperBound)
+        {
             return i;
+        }
     }
     return -1;
 }

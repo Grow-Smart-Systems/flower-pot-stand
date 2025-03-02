@@ -4,8 +4,7 @@
 
 
 /// @brief Класс таймера.
-
-class Timer 
+class Timer final
 {
 public:
     /// @brief Конструктор по умолчанию.
@@ -31,7 +30,6 @@ public:
     bool ready();
 
 private:
-
     /// @brief Переменная для хранения значения таймера.
     /// @details Используется для отслеживания времени в миллисекундах.
     uint32_t _timer {0};

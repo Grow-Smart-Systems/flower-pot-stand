@@ -1,22 +1,23 @@
 #pragma once
 
-#include <Arduino.h>
-#include "../SensorData.h"
-#include "../../ESP32_defines.h"
+#include "../BaseSensor.h"
 
 
-class SensorsData;
-
-class LightSensor
+/// @brief Базовый класс для всех датчиков освещенности
+class LightSensor : public BaseSensor
 {
 public:
+    /// @brief Конструктор по умолчанию
     LightSensor() = default;
+
+    /// @brief Деструктор по умолчанию
     ~LightSensor() = default;
 
-    virtual void getData(SensorsData& data) = 0;
+    /// @brief Получение коэффициента освещенности
+    /// @return Коэффициент освещенности
+    virtual uint16_t GetLightCoef() = 0;
 
-    virtual uint16_t getLightCoef() = 0;
-
-    virtual bool getIsDarkFlag() = 0;
+    /// @brief Установка данных в контейнер
+    /// @param container Контейнер данных
+    void SetDataIn(SensorsDataContainer& container) override;
 };
-

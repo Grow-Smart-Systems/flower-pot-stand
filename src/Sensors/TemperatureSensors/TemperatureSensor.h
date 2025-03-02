@@ -1,20 +1,27 @@
 #pragma once
 
-#include <Arduino.h>
-#include "../../ESP32_defines.h"
-#include "../SensorData.h"
+#include "../BaseSensor.h"
 
-class SensorsData;
 
-class TemperatureSensor
+/// @brief Базовый класс для всех датчиков температуры
+class TemperatureSensor : public BaseSensor
 {
 public:
+    /// @brief Конструктор по умолчанию
     TemperatureSensor() = default;
+
+    /// @brief Деструктор по умолчанию
     ~TemperatureSensor() = default;
 
-    virtual float getTemperature() = 0;
-    virtual float getHumidity() = 0;
+    /// @brief Получение температуры
+    /// @return Температура в градусах Цельсия
+    virtual float GetTemperature() = 0;
 
-    void getData(SensorsData& data);
+    /// @brief Получение влажности
+    /// @return Влажность в процентах
+    virtual float GetHumidity() = 0;
+
+    /// @brief Установка данных в контейнер
+    /// @param container Контейнер данных
+    void SetDataIn(SensorsDataContainer& container) override;
 };
-

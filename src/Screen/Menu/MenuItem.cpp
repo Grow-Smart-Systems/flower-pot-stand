@@ -1,10 +1,10 @@
 #include "MenuItem.h"
 #include "../../Common/Data.h"
 
-MenuItem::MenuItem(const String& name, std::function<void()> action, std::shared_ptr<Menu> subMenu) :
+MenuItem::MenuItem(const std::string& name, std::function<void()> action, std::shared_ptr<Menu> subMenu) :
     _name(name),
     _action(action),
-    _subMenu(subMenu)
+    _subMenu(std::move(subMenu))
 {}
 
 void MenuItem::SetAction(std::function<void()> action)
@@ -17,7 +17,7 @@ void MenuItem::SetSubMenu(std::shared_ptr<Menu> subMenu)
     _subMenu = subMenu;
 }
 
-String MenuItem::GetName() const
+std::string MenuItem::GetName() const
 {
     return _name;
 }

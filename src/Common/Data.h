@@ -2,108 +2,52 @@
 
 #include <Arduino.h>
 #include <memory>
+
+#include "EnumClasses.h"
 #include "../Screen/Screen.h"
-#include "../Sensors/SensorData.h"
+#include "../Sensors/Sensors.h"
+#include "../ControlDevices/ControlDevices.h"
 
 class Screen;
 class SensorsData;
 
-class Data
+class Data final
 {
 public:
-
-    // Sensors statuses
-    enum class TemperatureStatus
-    {
-        UNDEFINED_TEMPERATURE,
-        NORMAL_TEMPERATURE,
-        WARM_TEMPERATURE,
-        COLD_TEMPERATURE
-    };
-
-    enum class HumidityStatus
-    {
-        UNDEFINED_HUMIDITY,
-        NORMAL_HUMIDITY,
-        HIGH_HUMIDITY,
-        LOW_HUMIDITY
-    };
-
-    enum class LuxStatus
-    {
-        UNDEFINED_LUX,
-        NORMAL_LUX,
-        HIGH_LUX,
-        LOW_LUX
-    };
-    // 
-
-    // Network statuses
-
-    //
-
-    //Display statuses
-    enum class DisplayStatus
-    {
-        UNDEFINED_DISPLAY,
-        DISPLAY_ON,
-        DISPLAY_OFF
-    };
-
-    enum class DisplayMode
-    {
-        UNDEFINED_MODE,
-        AWAIT_MODE,
-        MENU_MODE
-    };
-
-    enum class DisplayMenu
-    {
-        MAIN_MENU,
-        SUB_MENU,
-        FUNCTIONAL_MENU
-    };
-    enum class DisplayFunctionalScreen
-    {
-        UNDEFINED_FUNCTIONAL_SCREEN,
-        TEMPERATURE_SENSOR_SCREEN,
-        HUMIDITY_SENSOR_SCREEN,
-        LUX_SENSOR_SCREEN
-    };
-    //
-
-    static Data& getInstance();
+    static Data& GetInstance();
 
     //Setters
-    void setTemperatureStatus(TemperatureStatus status);
-    void setHumidityStatus(HumidityStatus status);
-    void setLuxStatus(LuxStatus status);
+    void SetTemperatureStatus(TemperatureStatus status);
+    void SetHumidityStatus(HumidityStatus status);
+    void SetLuxStatus(LuxStatus status);
 
-    void setDisplayStatus(DisplayStatus status);
-    void setDisplayMode(DisplayMode mode);
-    void setDisplayMenu(DisplayMenu menu);
-    void setDisplayFunctionalScreen(DisplayFunctionalScreen screen);
+    void SetDisplayStatus(DisplayStatus status);
+    void SetDisplayMode(DisplayMode mode);
+    void SetDisplayMenu(DisplayMenu menu);
+    void SetDisplayFunctionalScreen(DisplayFunctionalScreen screen);
 
-    void setScreen(std::shared_ptr<Screen> screen);
-    void setSensorsData(std::shared_ptr<SensorsData> sensorsData);
+    void SetScreen(std::shared_ptr<Screen> screen);
+    void SetSensors(std::shared_ptr<Sensors> sensors);
+    void SetControlDevices(std::shared_ptr<ControlDevices> controlDevices);
     //
 
     //Getters
-    TemperatureStatus getTemperatureStatus() const;
-    HumidityStatus getHumidityStatus() const;
-    LuxStatus getLuxStatus() const;
+    TemperatureStatus GetTemperatureStatus() const;
+    HumidityStatus GetHumidityStatus() const;
+    LuxStatus GetLuxStatus() const;
 
-    DisplayStatus getDisplayStatus() const;
-    DisplayMode getDisplayMode() const;
-    DisplayMenu getDisplayMenu() const;
-    DisplayFunctionalScreen getDisplayFunctionalScreen() const;
+    DisplayStatus GetDisplayStatus() const;
+    DisplayMode GetDisplayMode() const;
+    DisplayMenu GetDisplayMenu() const;
+    DisplayFunctionalScreen GetDisplayFunctionalScreen() const;
 
-    std::shared_ptr<Screen> getScreen() const;
-    std::shared_ptr<SensorsData> getSensorsData() const;
+    std::shared_ptr<Screen> GetScreen() const;
+    std::shared_ptr<Sensors> GetSensors() const;
+    std::shared_ptr<ControlDevices> GetControlDevices() const;
     //
 
 private:
-    Data();
+    Data() = default;
     ~Data() = default;
     Data(const Data&) = delete;
     Data& operator=(const Data&) = delete;
@@ -118,5 +62,6 @@ private:
     DisplayFunctionalScreen _displayFunctionalScreen {DisplayFunctionalScreen::UNDEFINED_FUNCTIONAL_SCREEN};
 
     std::shared_ptr<Screen> _screen {nullptr};
-    std::shared_ptr<SensorsData> _sensorsData {nullptr};
+    std::shared_ptr<Sensors> _sensors {nullptr};
+    std::shared_ptr<ControlDevices> _controlDevices {nullptr};
 };

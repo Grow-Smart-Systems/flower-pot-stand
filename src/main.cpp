@@ -2,70 +2,51 @@
 #include <memory>
 
 #include "Screen/Screen.h"
-#include "Sensors/SensorData.h"
-#include "Utils/Timer.h"
-#include "Common/Data.h"
+#include "Sensors/Sensors.h"
 #include "ControlDevices/ControlDevices.h"
 
-#include "esp_system.h"
+#include "Utils/Timer.h"
+
+#include "Common/Data.h"
+
 
 /// ===== define ===== //
 /// ===== globals ===== //
 
-Data& data = Data::getInstance();
-
-ControlDevices _controlDevices;
+Data& data = Data::GetInstance();
 
 Timer _sensorsTimer;
 Timer _screenTimer;
 
 // ===== functions ===== //
 
-void printMemoryInfo()
-{
-    // Получение информации о свободной памяти
-    multi_heap_info_t heap_info;
-    heap_caps_get_info(&heap_info, MALLOC_CAP_DEFAULT);
-
-    Serial.println("====================================");
-    Serial.println("Memory Info:");
-    Serial.print("Total free bytes: ");
-    Serial.println(heap_info.total_free_bytes);
-    Serial.print("Total allocated bytes: ");
-    Serial.println(heap_info.total_allocated_bytes);
-    Serial.print("Largest free block: ");
-    Serial.println(heap_info.largest_free_block);
-    Serial.print("Minimum free bytes ever: ");
-    Serial.println(heap_info.minimum_free_bytes);
-    Serial.print("Number of free blocks: ");
-    Serial.println(heap_info.free_blocks);
-    Serial.print("Number of allocated blocks: ");
-    Serial.println(heap_info.allocated_blocks);
-    Serial.println("====================================");
-}
-
 void setup(void)
 {
     Serial.begin(115200);
     Serial.println(F("Start!"));
 
-    // OLED
+    // Screen
     Wire.begin(SDA, SCL);
     Serial.println(F("Initialize Screen ..."));
     std::shared_ptr<Screen> _screen = std::make_shared<Screen>();
-    data.setScreen(_screen);
-    if (!data.getScreen()->init())
+    data.SetScreen(_screen);
+    if (!data.GetScreen()->Init())
     {
         Serial.println(F("Error: Display initialization failed"));
         return;
     }
-    data.getScreen()->printInitializeScreen();
+    data.GetScreen()->PrintInitializeScreen();
     Serial.println(F("Screen initialized!"));
     //
 
     // Sensors
-    std::shared_ptr<SensorsData> _sensorsData = std::make_shared<SensorsData>();
-    data.setSensorsData(_sensorsData);
+    std::shared_ptr<Sensors> _sensors = std::make_shared<Sensors>();
+    data.SetSensors(_sensors);
+
+    // Control devices
+    std::shared_ptr<ControlDevices> _controlDevices = std::make_shared<ControlDevices>();
+    data.SetControlDevices(_controlDevices);
+    //
 
     delay(3000);
     Serial.println(F("Start menu ..."));
@@ -78,13 +59,23 @@ void loop(void)
     if (_sensorsTimer.ready())
     {
         // Обновим данные от сенсоров
-        data.getSensorsData()->update();
+        data.GetSensors()->Update();
     }
 
     if (_screenTimer.ready())
     {
         // Обновим экран
-        data.getScreen()->printMenu();
+        data.GetScreen()->PrintMenu();
     }
-    _controlDevices.LoopIteration();
+    data.GetControlDevices()->LoopIteration();
 }
+
+
+/// TODOLIST:
+// 1. Сделать абстрактный класс для всех классов интерфейсов (Sensors, ControlDevices, Screen)
+// 2. Прописать в этом классе общие методы для всех классов (LoopIteration)
+// 3. В main.cpp созвать вектор с указателями и перебирать его в loop
+// 4. Переписать все классы на наследование от абстрактного класса и прописать у каждого свой метод LoopIteration
+// 5. Перенести все таймеры в свои классы и использовать их в LoopIteration
+// -------------------
+// 6. Продумать и приступить к реализации класса для обработки данных с датчиков и управления устроством (Статусами)

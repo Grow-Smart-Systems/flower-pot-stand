@@ -1,7 +1,7 @@
 #include "TemperatureSensor.h"
 
-void TemperatureSensor::getData(SensorsData& data)
+void TemperatureSensor::SetDataIn(SensorsDataContainer& container)
 {
-    data.temperature = getTemperature();
-    data.humidity = getHumidity();
+    container.temperature = GetTemperature();
+    container.humidity = GetHumidity();
 }

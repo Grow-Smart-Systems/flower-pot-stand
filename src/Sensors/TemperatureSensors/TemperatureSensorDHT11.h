@@ -7,15 +7,24 @@
 #define DHTTYPE DHT11
 
 
-class TemperatureSensorDHT11 : public TemperatureSensor
+/// @brief Класс датчика температуры DHT11
+class TemperatureSensorDHT11 final : public TemperatureSensor
 {
-private:
-    DHT _dht;
-
 public:
+    /// @brief Конструктор
     TemperatureSensorDHT11();
+
+    /// @brief Деструктор
     ~TemperatureSensorDHT11() = default;
 
-    float getTemperature() override;
-    float getHumidity() override;
+    /// @brief Получение температуры
+    /// @return Температура в градусах Цельсия
+    float GetTemperature() override;
+
+    /// @brief Получение влажности
+    /// @return Влажность в процентах
+    float GetHumidity() override;
+
+private:
+    DHT _dht;
 };

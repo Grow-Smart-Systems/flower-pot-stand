@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 
-class SerialPortProcessor
+class SerialPortProcessor final
 {
 public:
     SerialPortProcessor() = default;

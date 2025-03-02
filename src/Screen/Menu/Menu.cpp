@@ -34,7 +34,7 @@ void Menu::SetDisplayMenu(DisplayMenu displayMenu)
     _displayMenu = displayMenu;
 }
 
-Data::DisplayMenu Menu::GetDisplayMenu() const
+DisplayMenu Menu::GetDisplayMenu() const
 {
     return _displayMenu;
 }

@@ -1,101 +1,107 @@
 #include "Data.h"
 
-Data& Data::getInstance()
+Data& Data::GetInstance()
 {
     static Data instance;
     return instance;
 }
 
-Data::Data()
-{
-}
-
-void Data::setTemperatureStatus(TemperatureStatus status)
+void Data::SetTemperatureStatus(TemperatureStatus status)
 {
     _temperatureStatus = status;
 }
 
-void Data::setHumidityStatus(HumidityStatus status)
+void Data::SetHumidityStatus(HumidityStatus status)
 {
     _humidityStatus = status;
 }
 
-void Data::setLuxStatus(LuxStatus status)
+void Data::SetLuxStatus(LuxStatus status)
 {
     _luxStatus = status;
 }
 
-Data::TemperatureStatus Data::getTemperatureStatus() const
+TemperatureStatus Data::GetTemperatureStatus() const
 {
     return _temperatureStatus;
 }
 
-Data::HumidityStatus Data::getHumidityStatus() const
+HumidityStatus Data::GetHumidityStatus() const
 {
     return _humidityStatus;
 }
 
-Data::LuxStatus Data::getLuxStatus() const
+LuxStatus Data::GetLuxStatus() const
 {
     return _luxStatus;
 }
 
-void Data::setDisplayStatus(DisplayStatus status)
+void Data::SetDisplayStatus(DisplayStatus status)
 {
     _displayStatus = status;
 }
 
-void Data::setDisplayMode(DisplayMode mode)
+void Data::SetDisplayMode(DisplayMode mode)
 {
     _displayMode = mode;
 }
 
-void Data::setDisplayMenu(DisplayMenu menu)
+void Data::SetDisplayMenu(DisplayMenu menu)
 {
     _displayMenu = menu;
 }
 
-void Data::setDisplayFunctionalScreen(DisplayFunctionalScreen screen)
+void Data::SetDisplayFunctionalScreen(DisplayFunctionalScreen screen)
 {
     _displayFunctionalScreen = screen;
 }
 
-void Data::setScreen(std::shared_ptr<Screen> screen)
+void Data::SetScreen(std::shared_ptr<Screen> screen)
 {
     _screen = screen;
 }
 
-void Data::setSensorsData(std::shared_ptr<SensorsData> sensorsData)
+void Data::SetSensors(std::shared_ptr<Sensors> sensors)
 {
-    _sensorsData = sensorsData;
+    _sensors = sensors;
 }
 
-Data::DisplayStatus Data::getDisplayStatus() const
+void Data::SetControlDevices(std::shared_ptr<ControlDevices> controlDevices)
+{
+    _controlDevices = controlDevices;
+}
+
+DisplayStatus Data::GetDisplayStatus() const
 {
     return _displayStatus;
 }
 
-Data::DisplayMode Data::getDisplayMode() const
+DisplayMode Data::GetDisplayMode() const
 {
     return _displayMode;
 }
 
-Data::DisplayMenu Data::getDisplayMenu() const
+DisplayMenu Data::GetDisplayMenu() const
 {
     return _displayMenu;
 }
 
-Data::DisplayFunctionalScreen Data::getDisplayFunctionalScreen() const
+DisplayFunctionalScreen Data::GetDisplayFunctionalScreen() const
 {
     return _displayFunctionalScreen;
 }
 
-std::shared_ptr<Screen> Data::getScreen() const
+std::shared_ptr<Screen> Data::GetScreen() const
 {
     return _screen;
 }
 
-std::shared_ptr<SensorsData> Data::getSensorsData() const
+std::shared_ptr<Sensors> Data::GetSensors() const
 {
-    return _sensorsData;
+    return _sensors;
+}
+
+std::shared_ptr<ControlDevices> Data::GetControlDevices() const
+{
+    return _controlDevices;
 }

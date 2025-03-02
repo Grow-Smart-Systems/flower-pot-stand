@@ -3,7 +3,7 @@
 #include "BaseFunctionalScreen.h"
 
 
-class TemperatureSensorScreen : public BaseFunctionalScreen
+class TemperatureSensorScreen final : public BaseFunctionalScreen
 {
 
 public:

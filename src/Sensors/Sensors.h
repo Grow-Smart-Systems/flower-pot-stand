@@ -3,25 +3,25 @@
 #include "SensorsConfiguration.h"
 #include "LightSensors/LightSensor.h"
 #include "TemperatureSensors/TemperatureSensor.h"
+#include "../Common/Containers/SensorsDataContainer.h"
 
 class LightSensor;
 class TemperatureSensor;
 
-class SensorsData
+class Sensors final
 {
 
 public:
-    SensorsData();
-    ~SensorsData();
+    Sensors();
+    ~Sensors();
 
-    void update();
+    void Update();
 
-    float temperature{ .0 };
-    float humidity{ .0 };
-    uint16_t lux{ 0 };
-    uint8_t isDark{ 0 };
+    const SensorsDataContainer& GetSensorInfo();
 
 private:
+
+    SensorsDataContainer _dataContainer;
 
     LightSensor* _lightSensor;
     TemperatureSensor* _temperatureSensor;

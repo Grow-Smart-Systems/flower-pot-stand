@@ -7,6 +7,8 @@
 #include "Common/Data.h"
 #include "ControlDevices/ControlDevices.h"
 
+#include "esp_system.h"
+
 /// ===== define ===== //
 /// ===== globals ===== //
 
@@ -18,6 +20,29 @@ Timer _sensorsTimer;
 Timer _screenTimer;
 
 // ===== functions ===== //
+
+void printMemoryInfo()
+{
+    // Получение информации о свободной памяти
+    multi_heap_info_t heap_info;
+    heap_caps_get_info(&heap_info, MALLOC_CAP_DEFAULT);
+
+    Serial.println("====================================");
+    Serial.println("Memory Info:");
+    Serial.print("Total free bytes: ");
+    Serial.println(heap_info.total_free_bytes);
+    Serial.print("Total allocated bytes: ");
+    Serial.println(heap_info.total_allocated_bytes);
+    Serial.print("Largest free block: ");
+    Serial.println(heap_info.largest_free_block);
+    Serial.print("Minimum free bytes ever: ");
+    Serial.println(heap_info.minimum_free_bytes);
+    Serial.print("Number of free blocks: ");
+    Serial.println(heap_info.free_blocks);
+    Serial.print("Number of allocated blocks: ");
+    Serial.println(heap_info.allocated_blocks);
+    Serial.println("====================================");
+}
 
 void setup(void)
 {
@@ -61,6 +86,5 @@ void loop(void)
         // Обновим экран
         data.getScreen()->printMenu();
     }
-
     _controlDevices.LoopIteration();
 }

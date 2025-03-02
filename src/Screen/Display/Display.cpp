@@ -93,6 +93,25 @@ void Display::printFunctionMenu(bool editMode)
     _display->display();
 }
 
+void Display::printInitializeScreen()
+{
+    _display->clearDisplay();
+    _display->setFont(&Picopixel);
+    _display->setTextColor(SSD1306_WHITE);
+
+    // Логотип
+    _display->setTextSize(2);
+    _display->setCursor(20, 30);
+    _display->println("LOADING...");
+
+    // Версия
+    _display->setTextSize(1);
+    _display->setCursor(0, 60);
+    _display->println("build: v." + String(BUILD_TIME));
+
+    _display->display();
+}
+
 void Display::dispayOn()
 {
     _display->ssd1306_command(SSD1306_DISPLAYON);

@@ -13,7 +13,7 @@ class Data
 public:
 
     // Sensors statuses
-    enum TemperatureStatus
+    enum class TemperatureStatus
     {
         UNDEFINED_TEMPERATURE,
         NORMAL_TEMPERATURE,
@@ -21,7 +21,7 @@ public:
         COLD_TEMPERATURE
     };
 
-    enum HumidityStatus
+    enum class HumidityStatus
     {
         UNDEFINED_HUMIDITY,
         NORMAL_HUMIDITY,
@@ -29,7 +29,7 @@ public:
         LOW_HUMIDITY
     };
 
-    enum LuxStatus
+    enum class LuxStatus
     {
         UNDEFINED_LUX,
         NORMAL_LUX,
@@ -43,27 +43,27 @@ public:
     //
 
     //Display statuses
-    enum DisplayStatus
+    enum class DisplayStatus
     {
         UNDEFINED_DISPLAY,
         DISPLAY_ON,
         DISPLAY_OFF
     };
 
-    enum DisplayMode
+    enum class DisplayMode
     {
         UNDEFINED_MODE,
         AWAIT_MODE,
         MENU_MODE
     };
 
-    enum DisplayMenu
+    enum class DisplayMenu
     {
         MAIN_MENU,
         SUB_MENU,
-        FUNCTIONAL_SCREEN
+        FUNCTIONAL_MENU
     };
-    enum DisplayFunctionalScreen
+    enum class DisplayFunctionalScreen
     {
         UNDEFINED_FUNCTIONAL_SCREEN,
         TEMPERATURE_SENSOR_SCREEN,
@@ -72,8 +72,6 @@ public:
     };
     //
 
-
-public:
     static Data& getInstance();
 
     //Setters
@@ -110,15 +108,15 @@ private:
     Data(const Data&) = delete;
     Data& operator=(const Data&) = delete;
 
-    TemperatureStatus _temperatureStatus{ UNDEFINED_TEMPERATURE };
-    HumidityStatus _humidityStatus{ UNDEFINED_HUMIDITY };
-    LuxStatus _luxStatus{ UNDEFINED_LUX };
+    TemperatureStatus _temperatureStatus {TemperatureStatus::UNDEFINED_TEMPERATURE};
+    HumidityStatus _humidityStatus {HumidityStatus::UNDEFINED_HUMIDITY};
+    LuxStatus _luxStatus {LuxStatus::UNDEFINED_LUX};
 
-    DisplayStatus _displayStatus{ UNDEFINED_DISPLAY };
-    DisplayMode _displayMode{ UNDEFINED_MODE };
-    DisplayMenu _displayMenu{ MAIN_MENU };
-    DisplayFunctionalScreen _displayFunctionalScreen{ UNDEFINED_FUNCTIONAL_SCREEN };
+    DisplayStatus _displayStatus {DisplayStatus::UNDEFINED_DISPLAY};
+    DisplayMode _displayMode {DisplayMode::UNDEFINED_MODE};
+    DisplayMenu _displayMenu {DisplayMenu::MAIN_MENU};
+    DisplayFunctionalScreen _displayFunctionalScreen {DisplayFunctionalScreen::UNDEFINED_FUNCTIONAL_SCREEN};
 
-    std::shared_ptr<Screen> _screen{ nullptr };
-    std::shared_ptr<SensorsData> _sensorsData{ nullptr };
+    std::shared_ptr<Screen> _screen {nullptr};
+    std::shared_ptr<SensorsData> _sensorsData {nullptr};
 };

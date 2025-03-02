@@ -6,14 +6,18 @@ AdKeyboardDevice::Buttons AdKeyboardDevice::readButtons()
     unsigned long currentTime = millis();
     if (value < 3000)
     {
-        auto button = Buttons(getKey(value));
-        if (button != Buttons::UNDEFINED)
+        int keyIndex = getKey(value);
+        if (keyIndex != -1)
         {
-            if (button != _lastButton || (currentTime - _lastPressTime) > _debounceDelay)
+            auto button = Buttons(keyIndex);
+            if (button != Buttons::UNDEFINED)
             {
-                _lastButton = button;
-                _lastPressTime = currentTime;
-                return button;
+                if (button != _lastButton || (currentTime - _lastPressTime) > _debounceDelay)
+                {
+                    _lastButton = button;
+                    _lastPressTime = currentTime;
+                    return button;
+                }
             }
         }
     }

@@ -42,7 +42,10 @@ public:
     /// @param text5 Текст строки 5 меню
     void printSubMenu(int selectedString, const String& text0, const String& text1 = "", const String& text2 = "", const String& text3 = "", const String& text4 = "", const String& text5 = "");
 
+    //
     void printFunctionMenu(bool editMode = false);
+
+    void printInitializeScreen();
 
     void dispayOn();
 
@@ -70,7 +73,7 @@ private:
     void printHeader(String textHeader);
 
     /// @brief Экземпляр дисплея объекта для SSD1306 с разрешением 128x64, с использованием аппаратного I2C.
-    std::shared_ptr<Adafruit_SSD1306> _display{ nullptr };
+    std::shared_ptr<Adafruit_SSD1306> _display {nullptr};
 
-    std::shared_ptr<BaseFunctionalScreen> _functionalScreen{ nullptr };
+    std::shared_ptr<BaseFunctionalScreen> _functionalScreen {nullptr};
 };

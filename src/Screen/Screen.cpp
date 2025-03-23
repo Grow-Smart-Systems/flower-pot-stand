@@ -8,6 +8,20 @@ Screen::Screen()
     _menuController = std::make_shared<MenuController>();
 }
 
+void Screen::LoopIteration()
+{
+    if (_screenTimer.ready())
+    {
+        // Обновим экран
+        printMenu();
+    }
+}
+
+void Screen::StartTimers()
+{
+    _screenTimer.start(200);
+}
+
 bool Screen::Init()
 {
     bool result = _display->Init();
@@ -70,7 +84,7 @@ void Screen::PrintInitializeScreen()
     _display->PrintInitializeScreen();
 }
 
-void Screen::PrintMenu()
+void Screen::printMenu()
 {
     if (Data::GetInstance().GetDisplayMode() != DisplayMode::MENU_MODE)
         return;

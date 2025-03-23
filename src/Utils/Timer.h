@@ -16,6 +16,7 @@ public:
     Timer(uint32_t ms_period);
 
     /// @brief Запуск таймера с указанием периода в миллисекундах.
+    /// @param ms_period Период таймера в миллисекундах.
     void start(uint32_t ms_period);
 
     /// @brief Запуск таймера.

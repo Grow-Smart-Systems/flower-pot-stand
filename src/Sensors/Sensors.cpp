@@ -30,12 +30,25 @@ Sensors::~Sensors()
         delete _temperatureSensor;
 }
 
+void Sensors::LoopIteration()
+{
+    if (_sensorsTimer.ready())
+    {
+        update();
+    }
+}
+
+void Sensors::StartTimers()
+{
+    _sensorsTimer.start(2000);
+}
+
 const SensorsDataContainer& Sensors::GetSensorInfo()
 {
     return _dataContainer;
 }
 
-void Sensors::Update()
+void Sensors::update()
 {
     _temperatureSensor->SetDataIn(_dataContainer);
     _lightSensor->SetDataIn(_dataContainer);

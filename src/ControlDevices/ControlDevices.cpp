@@ -43,3 +43,8 @@ void ControlDevices::LoopIteration()
     }
 }
 
+void ControlDevices::StartTimers()
+{
+    _keyboardTimer.start(100);
+}
+

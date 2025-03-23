@@ -12,11 +12,15 @@
 #include "FunctionalScreens/TemperatureSensorScreen.h"
 #include "../../Common/Data.h"
 
+
+/// @brief Класс управления дисплеем
 class Display final
 {
 public:
+    /// @brief Конструктор
     Display();
 
+    /// @brief Деструктор по умолчанию
     ~Display() = default;
 
     /// @brief Инициализация экрана
@@ -56,27 +60,47 @@ public:
     //
     void PrintFunctionMenu(bool editMode = false);
 
+    /// @brief Печать начального экрана
     void PrintInitializeScreen();
 
+    /// @brief Команда на включение экрана
     void DispayOn();
 
+    /// @brief Команда на выключение экрана
     void DisplayOff();
 
 protected:
+    /// @brief Состояние выделения строки меню
     enum class SELECTED_STATUS
     {
-        SELECTED,
-        UNSELECTED
+        SELECTED,   // Выбрано
+        UNSELECTED  // Не выбрано
     };
 
+    /// @brief Печать статус-бара
     void printStatusBar();
 
+    /// @brief Печать рамки
+    /// @param menuFrame Флаг отображения рамки меню
     void printFrame(bool menuFrame = false);
 
+    /// @brief Печать строки меню для главного меню
+    /// @param text Текст строки
+    /// @param x Координата x
+    /// @param y Координата y
+    /// @param status Статус строки
     void printMainMenuString(const std::string& text, uint8_t x, uint8_t y, SELECTED_STATUS status);
 
+    /// @brief Печать строки меню для подменю
+    /// @param text Текст строки
+    /// @param x Координата x
+    /// @param y Координата y
+    /// @param status Статус строки
     void printSubMenuString(const std::string& text, uint8_t x, uint8_t y, SELECTED_STATUS status);
 
+    /// @brief Печать треугольников перемещения
+    /// @param upTriangle Флаг отображения треугольника "вверх"
+    /// @param downTriangle Флаг отображения треугольника "вниз"
     void printMovementTriangles(bool upTriangle = false, bool downTriangle = false);
 
     void printFooter(bool editMode = false);

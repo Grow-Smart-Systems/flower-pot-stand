@@ -26,5 +26,6 @@ public:
     float GetHumidity() override;
 
 private:
+    /// @brief Объект датчика DHT
     DHT _dht;
 };

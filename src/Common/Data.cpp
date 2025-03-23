@@ -56,6 +56,11 @@ void Data::SetDisplayFunctionalScreen(DisplayFunctionalScreen screen)
     _displayFunctionalScreen = screen;
 }
 
+void Data::SetDeviceController(std::shared_ptr<DeviceInterfaceController> deviceInterfaceController)
+{
+    _deviceInterfaceController = deviceInterfaceController;
+}
+
 void Data::SetScreen(std::shared_ptr<Screen> screen)
 {
     _screen = screen;
@@ -89,6 +94,11 @@ DisplayMenu Data::GetDisplayMenu() const
 DisplayFunctionalScreen Data::GetDisplayFunctionalScreen() const
 {
     return _displayFunctionalScreen;
+}
+
+std::shared_ptr<DeviceInterfaceController> Data::GetDeviceController() const
+{
+    return _deviceInterfaceController;
 }
 
 std::shared_ptr<Screen> Data::GetScreen() const

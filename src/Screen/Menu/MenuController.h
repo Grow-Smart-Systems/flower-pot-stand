@@ -39,7 +39,7 @@ public:
     /// @brief Переход к корневому меню
     void GotoRootMenu();
 
-    // MOVEMENT SECTION //
+    /* MOVEMENT SECTION */
 
     /// @brief Перемещение вверх по меню
     void NavigateUp();
@@ -53,7 +53,7 @@ public:
     /// @brief Возврат назад
     void Back();
 
-    // MOVEMENT SECTION END //
+    /* MOVEMENT SECTION END */
 
 private:
     /// @brief Указатель на корневое меню
@@ -62,5 +62,6 @@ private:
     /// @brief Указатель на текущее меню
     std::shared_ptr<Menu> _currentMenu {nullptr};
 
+    /// @brief Контейнер информации о меню
     MenuInfoContainer _menuInfoContainer;
 };

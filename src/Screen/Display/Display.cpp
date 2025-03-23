@@ -240,3 +240,8 @@ void Display::printHeader(const std::string& textHeader)
 {
 
 }
+
+void Display::printFooter(bool editMode)
+{
+    
+}

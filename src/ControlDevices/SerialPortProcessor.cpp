@@ -14,22 +14,22 @@ bool SerialPortProcessor::processMovementCommands(const String& command)
 {
     if (command == "UP" || command == "1")
     {
-        Data::getInstance().getScreen()->movemenuUp();
+        Data::GetInstance().GetScreen()->MovemenuUp();
         return true;
     }
     else if (command == "DOWN" || command == "2")
     {
-        Data::getInstance().getScreen()->movemenuDown();
+        Data::GetInstance().GetScreen()->MovemenuDown();
         return true;
     }
     else if (command == "BACK" || command == "3")
     {
-        Data::getInstance().getScreen()->movemenuBack();
+        Data::GetInstance().GetScreen()->MovemenuBack();
         return true;
     }
     else if (command == "ENTER" || command == "4")
     {
-        Data::getInstance().getScreen()->movemenuEnter();
+        Data::GetInstance().GetScreen()->MovemenuEnter();
         return true;
     }
     return false;

@@ -18,22 +18,22 @@ void ControlDevices::LoopIteration()
         // TODO: 2. Нужно отладить с настоящим устройством, кнопки могут работать не так как ожидается
         switch (key)
         {
-        case AdKeyboardDevice::Buttons::BUTTON_1:
-            _serialPortProcessor->process("BACK");
-            break;
-        case AdKeyboardDevice::Buttons::BUTTON_2:
-            _serialPortProcessor->process("UP");
-            break;
-        case AdKeyboardDevice::Buttons::BUTTON_3:
-            _serialPortProcessor->process("DOWN");
-            break;
-        case AdKeyboardDevice::Buttons::BUTTON_4:
-            _serialPortProcessor->process("ENTER");
-            break;
-        case AdKeyboardDevice::Buttons::BUTTON_5:
-            break;
-        default:
-            break;
+            case AdKeyboardDevice::Buttons::BUTTON_1:
+                _serialPortProcessor->process("BACK");
+                break;
+            case AdKeyboardDevice::Buttons::BUTTON_2:
+                _serialPortProcessor->process("UP");
+                break;
+            case AdKeyboardDevice::Buttons::BUTTON_3:
+                _serialPortProcessor->process("DOWN");
+                break;
+            case AdKeyboardDevice::Buttons::BUTTON_4:
+                _serialPortProcessor->process("ENTER");
+                break;
+            case AdKeyboardDevice::Buttons::BUTTON_5:
+                break;
+            default:
+                break;
         }
     }
 
@@ -41,5 +41,10 @@ void ControlDevices::LoopIteration()
     {
         _serialPortProcessor->process(Serial.readString());
     }
+}
+
+void ControlDevices::StartTimers()
+{
+    _keyboardTimer.start(100);
 }
 

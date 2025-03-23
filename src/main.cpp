@@ -1,66 +1,65 @@
 #include <Arduino.h>
 #include <memory>
 
+#include "Common/DeviceInterface/DeviceInterfaceController.h"
 #include "Screen/Screen.h"
-#include "Sensors/SensorData.h"
-#include "Utils/Timer.h"
-#include "Common/Data.h"
+#include "Sensors/Sensors.h"
 #include "ControlDevices/ControlDevices.h"
+#include "Common/Data.h"
 
-/// ===== define ===== //
+
 /// ===== globals ===== //
 
-Data& data = Data::getInstance();
-
-ControlDevices _controlDevices;
-
-Timer _sensorsTimer;
-Timer _screenTimer;
+Data& data = Data::GetInstance();
 
 // ===== functions ===== //
 
 void setup(void)
 {
     Serial.begin(115200);
-    Serial.println(F("Start!"));
+    Serial.println(F("=== Start program! ==="));
 
-    // OLED
+    // Device interface controller
+    std::shared_ptr<DeviceInterfaceController> _deviceInterfaceController = std::make_shared<DeviceInterfaceController>();
+    data.SetDeviceController(_deviceInterfaceController);
+
+    // Screen
     Wire.begin(SDA, SCL);
     Serial.println(F("Initialize Screen ..."));
     std::shared_ptr<Screen> _screen = std::make_shared<Screen>();
-    data.setScreen(_screen);
-    if (!data.getScreen()->init())
+    data.SetScreen(_screen);
+    data.GetDeviceController()->AddDevice(_screen);
+    if (!data.GetScreen()->Init())
     {
         Serial.println(F("Error: Display initialization failed"));
         return;
     }
-    data.getScreen()->printInitializeScreen();
+    data.GetScreen()->PrintInitializeScreen();
     Serial.println(F("Screen initialized!"));
     //
 
     // Sensors
-    std::shared_ptr<SensorsData> _sensorsData = std::make_shared<SensorsData>();
-    data.setSensorsData(_sensorsData);
+    Serial.println(F("Initialize Sensors ..."));
+    std::shared_ptr<Sensors> _sensors = std::make_shared<Sensors>();
+    data.SetSensors(_sensors);
+    data.GetDeviceController()->AddDevice(_sensors);
+    Serial.println(F("Sensors initialized!"));
+    //
+
+    // Control devices
+    Serial.println(F("Initialize ControlDevices ..."));
+    std::shared_ptr<ControlDevices> _controlDevices = std::make_shared<ControlDevices>();
+    data.SetControlDevices(_controlDevices);
+    data.GetDeviceController()->AddDevice(_controlDevices);
+    Serial.println(F("ControlDevices initialized!"));
+    //
 
     delay(3000);
     Serial.println(F("Start menu ..."));
-    _sensorsTimer.start(2000);
-    _screenTimer.start(500);
+    data.GetDeviceController()->StartTimers();
 }
 
 void loop(void)
 {
-    if (_sensorsTimer.ready())
-    {
-        // Обновим данные от сенсоров
-        data.getSensorsData()->update();
-    }
-
-    if (_screenTimer.ready())
-    {
-        // Обновим экран
-        data.getScreen()->printMenu();
-    }
-
-    _controlDevices.LoopIteration();
+    data.GetDeviceController()->MakeLoopIterations();
 }

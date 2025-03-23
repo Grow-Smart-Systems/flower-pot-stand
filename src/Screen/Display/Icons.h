@@ -1,12 +1,13 @@
 #pragma once
 
 #include <Arduino.h>
+#include <map>
 
-//All icons are 16x16 pixels
+// All icons are 16x16 pixels
 #define ICON_WIDTH 16
 #define ICON_HEIGHT 16
 
-const uint8_t iconWet[] = {
+const uint8_t iconWet[] PROGMEM = {
     0x00, 0x00,
     0x08, 0x00,
     0x08, 0x00,
@@ -24,7 +25,8 @@ const uint8_t iconWet[] = {
     0x0e, 0x00,
     0x00, 0x00
 };
-const uint8_t iconDry[] = {
+
+const uint8_t iconDry[] PROGMEM = {
     0x00, 0x00,
     0x00, 0x00,
     0x00, 0xe0,
@@ -42,4 +44,9 @@ const uint8_t iconDry[] = {
     0x00, 0x00,
     0x00, 0x00
 };
-// 
+
+static std::map<String, const uint8_t*> icons =
+{
+    {"WET", iconWet},
+    {"DRY", iconDry}
+};

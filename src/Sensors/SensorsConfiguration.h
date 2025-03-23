@@ -7,5 +7,3 @@
 
 //Temp'n'hum sensor
 #define TEMPERATURE_SENSOR SENSOR_DHT11
-
-//OLED

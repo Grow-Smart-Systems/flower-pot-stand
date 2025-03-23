@@ -2,123 +2,105 @@
 
 #include <Arduino.h>
 #include <memory>
+#include <vector>
+
+#include "EnumClasses.h"
+#include "DeviceInterface/DeviceInterfaceController.h"
 #include "../Screen/Screen.h"
-#include "../Sensors/SensorData.h"
+#include "../Sensors/Sensors.h"
+#include "../ControlDevices/ControlDevices.h"
 
 class Screen;
 class SensorsData;
 
-class Data
+
+/// @brief Класс для хранения данных
+class Data final
 {
 public:
-
-    // Sensors statuses
-    enum TemperatureStatus
-    {
-        UNDEFINED_TEMPERATURE,
-        NORMAL_TEMPERATURE,
-        WARM_TEMPERATURE,
-        COLD_TEMPERATURE
-    };
-
-    enum HumidityStatus
-    {
-        UNDEFINED_HUMIDITY,
-        NORMAL_HUMIDITY,
-        HIGH_HUMIDITY,
-        LOW_HUMIDITY
-    };
-
-    enum LuxStatus
-    {
-        UNDEFINED_LUX,
-        NORMAL_LUX,
-        HIGH_LUX,
-        LOW_LUX
-    };
-    // 
-
-    // Network statuses
-
-    //
-
-    //Display statuses
-    enum DisplayStatus
-    {
-        UNDEFINED_DISPLAY,
-        DISPLAY_ON,
-        DISPLAY_OFF
-    };
-
-    enum DisplayMode
-    {
-        UNDEFINED_MODE,
-        AWAIT_MODE,
-        MENU_MODE
-    };
-
-    enum DisplayMenu
-    {
-        MAIN_MENU,
-        SUB_MENU,
-        FUNCTIONAL_SCREEN
-    };
-    enum DisplayFunctionalScreen
-    {
-        UNDEFINED_FUNCTIONAL_SCREEN,
-        TEMPERATURE_SENSOR_SCREEN,
-        HUMIDITY_SENSOR_SCREEN,
-        LUX_SENSOR_SCREEN
-    };
-    //
-
-
-public:
-    static Data& getInstance();
+    /// @brief Получение экземпляра класса
+    /// @return Экземпляр класса
+    static Data& GetInstance();
 
     //Setters
-    void setTemperatureStatus(TemperatureStatus status);
-    void setHumidityStatus(HumidityStatus status);
-    void setLuxStatus(LuxStatus status);
+    void SetTemperatureStatus(TemperatureStatus status);
+    void SetHumidityStatus(HumidityStatus status);
+    void SetLuxStatus(LuxStatus status);
 
-    void setDisplayStatus(DisplayStatus status);
-    void setDisplayMode(DisplayMode mode);
-    void setDisplayMenu(DisplayMenu menu);
-    void setDisplayFunctionalScreen(DisplayFunctionalScreen screen);
+    void SetDisplayStatus(DisplayStatus status);
+    void SetDisplayMode(DisplayMode mode);
+    void SetDisplayMenu(DisplayMenu menu);
+    void SetDisplayFunctionalScreen(DisplayFunctionalScreen screen);
 
-    void setScreen(std::shared_ptr<Screen> screen);
-    void setSensorsData(std::shared_ptr<SensorsData> sensorsData);
+    void SetDeviceController(std::shared_ptr<DeviceInterfaceController> deviceInterfaceController);
+    void SetScreen(std::shared_ptr<Screen> screen);
+    void SetSensors(std::shared_ptr<Sensors> sensors);
+    void SetControlDevices(std::shared_ptr<ControlDevices> controlDevices);
     //
 
     //Getters
-    TemperatureStatus getTemperatureStatus() const;
-    HumidityStatus getHumidityStatus() const;
-    LuxStatus getLuxStatus() const;
+    TemperatureStatus GetTemperatureStatus() const;
+    HumidityStatus GetHumidityStatus() const;
+    LuxStatus GetLuxStatus() const;
 
-    DisplayStatus getDisplayStatus() const;
-    DisplayMode getDisplayMode() const;
-    DisplayMenu getDisplayMenu() const;
-    DisplayFunctionalScreen getDisplayFunctionalScreen() const;
+    DisplayStatus GetDisplayStatus() const;
+    DisplayMode GetDisplayMode() const;
+    DisplayMenu GetDisplayMenu() const;
+    DisplayFunctionalScreen GetDisplayFunctionalScreen() const;
 
-    std::shared_ptr<Screen> getScreen() const;
-    std::shared_ptr<SensorsData> getSensorsData() const;
+    std::shared_ptr<DeviceInterfaceController> GetDeviceController() const;
+    std::shared_ptr<Screen> GetScreen() const;
+    std::shared_ptr<Sensors> GetSensors() const;
+    std::shared_ptr<ControlDevices> GetControlDevices() const;
     //
 
 private:
-    Data();
+    /// @brief Конструктор по умолчанию
+    Data() = default;
+
+    /// @brief Деструктор по умолчанию
     ~Data() = default;
+
+    /// @brief Конструктор копирования
+    /// @param other Другой объект
     Data(const Data&) = delete;
+
+    /// @brief Оператор присваивания
+    /// @param other Другой объект
     Data& operator=(const Data&) = delete;
 
-    TemperatureStatus _temperatureStatus{ UNDEFINED_TEMPERATURE };
-    HumidityStatus _humidityStatus{ UNDEFINED_HUMIDITY };
-    LuxStatus _luxStatus{ UNDEFINED_LUX };
+    /// @brief Статусы температуры
+    TemperatureStatus _temperatureStatus {TemperatureStatus::UNDEFINED_TEMPERATURE};
 
-    DisplayStatus _displayStatus{ UNDEFINED_DISPLAY };
-    DisplayMode _displayMode{ UNDEFINED_MODE };
-    DisplayMenu _displayMenu{ MAIN_MENU };
-    DisplayFunctionalScreen _displayFunctionalScreen{ UNDEFINED_FUNCTIONAL_SCREEN };
+    /// @brief Статусы влажности
+    HumidityStatus _humidityStatus {HumidityStatus::UNDEFINED_HUMIDITY};
 
-    std::shared_ptr<Screen> _screen{ nullptr };
-    std::shared_ptr<SensorsData> _sensorsData{ nullptr };
+    /// @brief Статусы освещенности
+    LuxStatus _luxStatus {LuxStatus::UNDEFINED_LUX};
+
+    /// @brief Статус дисплея
+    DisplayStatus _displayStatus {DisplayStatus::UNDEFINED_DISPLAY};
+
+    /// @brief Режим дисплея
+    DisplayMode _displayMode {DisplayMode::UNDEFINED_MODE};
+
+    /// @brief Меню дисплея
+    DisplayMenu _displayMenu {DisplayMenu::MAIN_MENU};
+
+    /// @brief Тип функционального экрана дисплея
+    DisplayFunctionalScreen _displayFunctionalScreen {DisplayFunctionalScreen::UNDEFINED_FUNCTIONAL_SCREEN};
+
+    /* Devices */
+
+    /// @brief Контроллер устройств
+    std::shared_ptr<DeviceInterfaceController> _deviceInterfaceController {nullptr};
+
+    /// @brief Устройство - экран
+    std::shared_ptr<Screen> _screen {nullptr};
+
+    /// @brief Устройство - датчики
+    std::shared_ptr<Sensors> _sensors {nullptr};
+
+    /// @brief Устройство - внешнее управление
+    std::shared_ptr<ControlDevices> _controlDevices {nullptr};
 };

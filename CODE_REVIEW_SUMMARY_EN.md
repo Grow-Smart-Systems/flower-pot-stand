@@ -95,7 +95,7 @@ The project demonstrates good foundational practices with modern C++17 features 
 
 - **Total Files:** 46 C++/Arduino files
 - **Lines of Code:** ~1,112
-- **Average Complexity:** Medium
+- **Average Cyclomatic Complexity:** Medium (5-15 per function)
 - **Documentation Coverage:** ~50%
 - **Test Coverage:** 0% (no tests)
 
@@ -160,7 +160,7 @@ The project demonstrates good foundational practices with modern C++17 features 
 ### Recommendations
 
 ```cpp
-void SerialPortProcessor::process(const String& command)
+void SerialPortProcessor::process(const std::string& command)
 {
     if (command.length() > 50) {  // Max command length
         Serial.println("Error: Command too long");
@@ -207,7 +207,7 @@ test/
 
 ```cpp
 // Use std::string_view for read-only string parameters (C++17)
-void printMainMenuString(std::string_view text, ...);
+void printMainMenuString(std::string_view text, uint8_t x, uint8_t y, SELECTED_STATUS status);
 
 // Reserve vector capacity upfront
 _menuInfoContainer.text.reserve(MAX_MENU_ITEMS);
@@ -256,10 +256,11 @@ _menuInfoContainer.text.reserve(MAX_MENU_ITEMS);
 ### Configuration Files to Add
 
 **.clang-format**
-```yaml
+```
 BasedOnStyle: Google
 IndentWidth: 4
 ColumnLimit: 120
+AllowShortFunctionsOnASingleLine: Empty
 ```
 
 **.editorconfig**

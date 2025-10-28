@@ -43,6 +43,9 @@ const SensorsDataContainer& Sensors::GetSensorInfo()
 
 void Sensors::update()
 {
-    _temperatureSensor->SetDataIn(_dataContainer);
-    _lightSensor->SetDataIn(_dataContainer);
+    if (_temperatureSensor)
+        _temperatureSensor->SetDataIn(_dataContainer);
+    
+    if (_lightSensor)
+        _lightSensor->SetDataIn(_dataContainer);
 }

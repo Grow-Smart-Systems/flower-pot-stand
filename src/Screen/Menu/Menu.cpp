@@ -51,7 +51,7 @@ int Menu::GetCurrentIndex() const
 
 const MenuItem& Menu::GetMenuItemAt(int index)
 {
-    if (index >= _menuItems.size())
+    if (index < 0 || index >= static_cast<int>(_menuItems.size()))
         return _emptyItem;
     return _menuItems[index];
 }
@@ -74,7 +74,7 @@ std::shared_ptr<Menu> Menu::Back()
 
 void Menu::SelectNextItem()
 {
-    if (_selectedItem < _menuItems.size() - 1)
+    if (!_menuItems.empty() && _selectedItem < static_cast<int>(_menuItems.size()) - 1)
         ++_selectedItem;
 }
 

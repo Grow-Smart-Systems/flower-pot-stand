@@ -13,11 +13,11 @@ Sensors::Sensors()
 {
 
 #if LIGHT_SENSOR == SENSOR_LM393
-    _lightSensor = std::make_unique<LightSensorLM393>();
+    _lightSensor = std::make_shared<LightSensorLM393>();
 #endif
 
 #if TEMPERATURE_SENSOR == SENSOR_DHT11
-    _temperatureSensor = std::make_unique<TemperatureSensorDHT11>();
+    _temperatureSensor = std::make_shared<TemperatureSensorDHT11>();
 #endif
 }
 
@@ -44,12 +44,8 @@ const SensorsDataContainer& Sensors::GetSensorInfo()
 void Sensors::update()
 {
     if (_temperatureSensor)
-    {
         _temperatureSensor->SetDataIn(_dataContainer);
-    }
     
     if (_lightSensor)
-    {
         _lightSensor->SetDataIn(_dataContainer);
-    }
 }

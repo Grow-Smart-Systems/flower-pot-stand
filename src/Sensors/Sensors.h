@@ -40,10 +40,10 @@ private:
     SensorsDataContainer _dataContainer;
 
     /// @brief Сенсор освещенности
-    std::unique_ptr<LightSensor> _lightSensor;
+    std::shared_ptr<LightSensor> _lightSensor;
 
     /// @brief Сенсор температуры
-    std::unique_ptr<TemperatureSensor> _temperatureSensor;
+    std::shared_ptr<TemperatureSensor> _temperatureSensor;
 
     /// @brief Таймер обновления данных сенсоров
     Timer _sensorsTimer;

@@ -13,22 +13,15 @@ Sensors::Sensors()
 {
 
 #if LIGHT_SENSOR == SENSOR_LM393
-    _lightSensor = new LightSensorLM393();
+    _lightSensor = std::make_shared<LightSensorLM393>();
 #endif
 
 #if TEMPERATURE_SENSOR == SENSOR_DHT11
-    _temperatureSensor = new TemperatureSensorDHT11();
+    _temperatureSensor = std::make_shared<TemperatureSensorDHT11>();
 #endif
 }
 
-Sensors::~Sensors()
-{
-    if (_lightSensor)
-        delete _lightSensor;
-
-    if (_temperatureSensor)
-        delete _temperatureSensor;
-}
+Sensors::~Sensors() = default;
 
 void Sensors::LoopIteration()
 {
@@ -50,6 +43,9 @@ const SensorsDataContainer& Sensors::GetSensorInfo()
 
 void Sensors::update()
 {
-    _temperatureSensor->SetDataIn(_dataContainer);
-    _lightSensor->SetDataIn(_dataContainer);
+    if (_temperatureSensor)
+        _temperatureSensor->SetDataIn(_dataContainer);
+    
+    if (_lightSensor)
+        _lightSensor->SetDataIn(_dataContainer);
 }

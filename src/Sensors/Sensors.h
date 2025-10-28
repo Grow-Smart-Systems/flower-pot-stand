@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "../Common/DeviceInterface/DeviceInterface.h"
 #include "SensorsConfiguration.h"
 #include "LightSensors/LightSensor.h"
@@ -39,10 +40,10 @@ private:
     SensorsDataContainer _dataContainer;
 
     /// @brief Сенсор освещенности
-    LightSensor* _lightSensor;
+    std::shared_ptr<LightSensor> _lightSensor;
 
     /// @brief Сенсор температуры
-    TemperatureSensor* _temperatureSensor;
+    std::shared_ptr<TemperatureSensor> _temperatureSensor;
 
     /// @brief Таймер обновления данных сенсоров
     Timer _sensorsTimer;

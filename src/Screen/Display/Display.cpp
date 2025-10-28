@@ -1,6 +1,6 @@
 #include "Display.h"
 #include "Icons.h"
-#include "fonts/Picopixel.h"
+#include <Fonts/Picopixel.h>
 #include <Wire.h>
 
 

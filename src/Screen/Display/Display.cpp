@@ -6,10 +6,10 @@
 
 Display::Display()
 {
-    _display = std::shared_ptr<Adafruit_SSD1306>(new Adafruit_SSD1306(SCREEN_WIDTH,
-                                                                      SCREEN_HEIGHT,
-                                                                      &Wire,
-                                                                      OLED_RESET));
+    _display = std::make_shared<Adafruit_SSD1306>(SCREEN_WIDTH,
+                                                   SCREEN_HEIGHT,
+                                                   &Wire,
+                                                   OLED_RESET);
 }
 
 bool Display::Init()

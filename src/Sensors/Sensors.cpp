@@ -13,22 +13,15 @@ Sensors::Sensors()
 {
 
 #if LIGHT_SENSOR == SENSOR_LM393
-    _lightSensor = new LightSensorLM393();
+    _lightSensor = std::make_unique<LightSensorLM393>();
 #endif
 
 #if TEMPERATURE_SENSOR == SENSOR_DHT11
-    _temperatureSensor = new TemperatureSensorDHT11();
+    _temperatureSensor = std::make_unique<TemperatureSensorDHT11>();
 #endif
 }
 
-Sensors::~Sensors()
-{
-    if (_lightSensor)
-        delete _lightSensor;
-
-    if (_temperatureSensor)
-        delete _temperatureSensor;
-}
+Sensors::~Sensors() = default;
 
 void Sensors::LoopIteration()
 {

@@ -1,5 +1,7 @@
 #include "Screen.h"
 #include "Menu/Menu.h"
+#include "Menu/MenuBuilder.h"
+#include "Display/Display.h"
 #include "../Common/Containers/MenuInfoContainer.h"
 
 Screen::Screen()
@@ -39,35 +41,48 @@ void Screen::InitMenu()
     Data::GetInstance().SetDisplayMode(DisplayMode::MENU_MODE);
     Data::GetInstance().SetDisplayMenu(DisplayMenu::MAIN_MENU);
 
-    auto rootMenu = _menuController->GetRootMenu();
-    auto sensorsMenu = _menuController->CreateMenuItem("Sensors", rootMenu, nullptr);
+    // Создаём корневое меню
+    auto rootMenu = MenuBuilder::CreateRootMenu(DisplayMenu::MAIN_MENU);
+    _menuController->SetRootMenu(rootMenu);
+
+    // Создаём меню сенсоров
+    auto sensorsMenu = MenuBuilder::CreateSubMenu("Sensors", rootMenu, DisplayMenu::SUB_MENU);
     {
-        auto tempMenuItem = _menuController->CreateMenuItem("Temperature", sensorsMenu, std::bind(&Screen::temperatureAction, this));
-        tempMenuItem->SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+        MenuBuilder::AddAction("Temperature", sensorsMenu,
+            std::bind(&Screen::temperatureAction, this),
+            DisplayMenu::FUNCTIONAL_MENU);
 
-        auto humidityMenuItem = _menuController->CreateMenuItem("Humidity", sensorsMenu, nullptr);
-        humidityMenuItem->SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+        MenuBuilder::AddAction("Humidity", sensorsMenu,
+            nullptr,
+            DisplayMenu::FUNCTIONAL_MENU);
 
-        auto luxMenuItem = _menuController->CreateMenuItem("Lux", sensorsMenu, nullptr);
-        luxMenuItem->SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+        MenuBuilder::AddAction("Lux", sensorsMenu,
+            nullptr,
+            DisplayMenu::FUNCTIONAL_MENU);
     }
 
-    auto settingsMenu = _menuController->CreateMenuItem("Settings", rootMenu, nullptr);
+    // Создаём меню настроек
+    auto settingsMenu = MenuBuilder::CreateSubMenu("Settings", rootMenu, DisplayMenu::SUB_MENU);
     {
-        auto wifiMenuItem = _menuController->CreateMenuItem("WiFi", settingsMenu, nullptr);
-        wifiMenuItem->SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+        MenuBuilder::AddAction("WiFi", settingsMenu,
+            nullptr,
+            DisplayMenu::FUNCTIONAL_MENU);
 
-        auto serviceMenuItem = _menuController->CreateMenuItem("Service connection", settingsMenu, nullptr);
-        serviceMenuItem->SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+        MenuBuilder::AddAction("Service connection", settingsMenu,
+            nullptr,
+            DisplayMenu::FUNCTIONAL_MENU);
     }
 
-    auto aboutMenu = _menuController->CreateMenuItem("About", rootMenu, nullptr);
+    // Создаём меню "О программе"
+    auto aboutMenu = MenuBuilder::CreateSubMenu("About", rootMenu, DisplayMenu::SUB_MENU);
     {
-        auto versionMenuItem = _menuController->CreateMenuItem("Version", aboutMenu, nullptr);
-        versionMenuItem->SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+        MenuBuilder::AddAction("Version", aboutMenu,
+            nullptr,
+            DisplayMenu::FUNCTIONAL_MENU);
 
-        auto authorMenuItem = _menuController->CreateMenuItem("Author", aboutMenu, nullptr);
-        authorMenuItem->SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+        MenuBuilder::AddAction("Author", aboutMenu,
+            nullptr,
+            DisplayMenu::FUNCTIONAL_MENU);
     }
 }
 

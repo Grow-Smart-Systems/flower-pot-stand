@@ -5,86 +5,91 @@
 #include <vector>
 
 #include "../../Common/EnumClasses.h"
-#include "../../Common/Data.h"
-#include "../Display/Display.h"
-#include "MenuItem.h"
+#include "IMenuItem.h"
 
+class IMenuItem;
 
-class Display;
-class MenuItem;
-
-/// @brief Класс меню
-class Menu final
+/// @brief Класс контейнера меню
+/// @details Хранит пункты меню и управляет навигацией внутри одного уровня
+class Menu final : public std::enable_shared_from_this<Menu>
 {
-
 public:
     /// @brief Конструктор
-    /// @param parentMenu Родительское меню
     /// @param displayMenu Тип отображения меню
-    Menu(std::shared_ptr<Menu> parentMenu = nullptr, DisplayMenu displayMenu = DisplayMenu::SUB_MENU);
+    Menu(DisplayMenu displayMenu = DisplayMenu::SUB_MENU);
 
     /// @brief Деструктор
     ~Menu();
 
-    /// @brief Получает выбранный пункта меню
-    /// @return Выбранный пункт меню
-    const MenuItem& GetSelectedItem();
+    /// @brief Устанавливает родительское меню
+    /// @param parent Указатель на родительское меню
+    void SetParent(std::weak_ptr<Menu> parent);
 
-    /// @brief Получает пункт меню по индексу
-    /// @param index Индекс пункта меню
-    /// @return Пункт меню
-    const MenuItem& GetMenuItemAt(int index);
+    /// @brief Получает родительское меню
+    /// @return Указатель на родительское меню или nullptr
+    std::shared_ptr<Menu> GetParent() const;
 
-    /// @brief Устанавливает пункты меню
-    /// @param menuItems Пункты меню
-    void SetMenuItems(const std::vector<MenuItem>& menuItems);
+    /// @brief Проверяет наличие родительского меню
+    /// @return true если есть родитель, false если корневое меню
+    bool HasParent() const;
 
     /// @brief Добавляет пункт меню
-    /// @param menuItem Пункт меню
-    void AddMenuItem(const MenuItem menuItem);
+    /// @param item Указатель на пункт меню
+    void AddItem(std::unique_ptr<IMenuItem> item);
 
-    /// @brief Устанавливает тип отображения меню
-    /// @param displayMenu Тип отображения меню
-    void SetDisplayMenu(DisplayMenu displayMenu);
+    /// @brief Получает пункт меню по индексу
+    /// @param index Индекс пункта
+    /// @return Указатель на пункт меню или nullptr
+    IMenuItem* GetItemAt(int index) const;
 
-    /// @brief Получает тип отображения меню
-    /// @return Тип отображения меню
-    DisplayMenu GetDisplayMenu() const;
+    /// @brief Получает текущий выбранный пункт меню
+    /// @return Указатель на выбранный пункт или nullptr
+    IMenuItem* GetSelectedItem() const;
 
     /// @brief Получает количество пунктов меню
-    /// @return Количество пунктов меню
-    int GetMenuItemsSize() const;
+    /// @return Количество пунктов
+    int GetItemCount() const;
 
-    /// @brief Получает текущий индекс
+    /// @brief Получает текущий индекс выбранного пункта
     /// @return Текущий индекс
-    int GetCurrentIndex() const;
+    int GetSelectedIndex() const;
 
-    // Movement section //
+    /// @brief Устанавливает текущий индекс выбранного пункта
+    /// @param index Новый индекс
+    void SetSelectedIndex(int index);
 
-    /// @brief Перемещение по меню в глубь
-    std::shared_ptr<Menu> ExecuteMenu();
+    /// @brief Сбрасывает индекс на начало
+    void ResetSelection();
 
-    /// @brief Перемещение по меню назад
-    std::shared_ptr<Menu> Back();
+    /// @brief Перемещает выбор на следующий пункт
+    /// @return true если перемещение выполнено, false если уже в конце
+    bool SelectNext();
 
-    /// @brief Перемещение по меню вниз
-    void SelectNextItem();
+    /// @brief Перемещает выбор на предыдущий пункт
+    /// @return true если перемещение выполнено, false если уже в начале
+    bool SelectPrevious();
 
-    /// @brief Перемещение по меню вверх
-    void SelectPreviousItem();
+    /// @brief Получает тип отображения меню
+    /// @return Тип отображения
+    DisplayMenu GetDisplayMenuType() const;
 
-    // Movement section end //
+    /// @brief Устанавливает тип отображения меню
+    /// @param displayMenu Тип отображения
+    void SetDisplayMenuType(DisplayMenu displayMenu);
+
+    /// @brief Очищает все пункты меню
+    void Clear();
 
 private:
-    /// @brief Указатель на родительское меню
-    std::shared_ptr<Menu> _parentMenu {nullptr};
+    /// @brief Указатель на родительское меню (weak для избежания циклических ссылок)
+    std::weak_ptr<Menu> _parent;
 
-    /// @brief Набор пунктов меню
-    std::vector<MenuItem> _menuItems;
+    /// @brief Набор пунктов меню (владеющие указатели)
+    std::vector<std::unique_ptr<IMenuItem>> _items;
 
-    /// @brief Текущий выбранный индекс пункта меню
-    int _selectedItem {0};
+    /// @brief Текущий выбранный индекс
+    int _selectedIndex{0};
 
     /// @brief Тип отображения меню
-    DisplayMenu _displayMenu {DisplayMenu::SUB_MENU};
+    DisplayMenu _displayMenuType;
 };

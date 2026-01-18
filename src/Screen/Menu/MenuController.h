@@ -6,10 +6,11 @@
 #include "../../Common/Containers/MenuInfoContainer.h"
 
 class Menu;
-class Display;
-
+class MenuNavigator;
+class IMenuItem;
 
 /// @brief Класс контроллера меню
+/// @details Фасад для работы с системой меню, объединяет навигацию и предоставление данных
 class MenuController final
 {
 public:
@@ -19,27 +20,22 @@ public:
     /// @brief Деструктор
     ~MenuController() = default;
 
-    /// @brief Передает информацию о текущем меню
-    /// @return Контейнер информации о меню
+    /// @brief Получает информацию о текущем меню для отображения
+    /// @return Контейнер с информацией о меню
     const MenuInfoContainer& GetDisplayInfo();
 
-    /// @brief Возвращает корневое меню
+    /// @brief Получает корневое меню
     /// @return Указатель на корневое меню
     std::shared_ptr<Menu> GetRootMenu() const;
 
-    /// @brief Создает новый пункт меню
-    /// @param name Имя пункта меню
-    /// @param parentMenu Родительское меню
-    /// @param action Действие пункта меню
-    /// @return Указатель на новое меню
-    std::shared_ptr<Menu> CreateMenuItem(const std::string& name,
-                                         std::shared_ptr<Menu> parentMenu,
-                                         std::function<void()> action = nullptr);
+    /// @brief Устанавливает корневое меню
+    /// @param rootMenu Указатель на корневое меню
+    void SetRootMenu(std::shared_ptr<Menu> rootMenu);
 
     /// @brief Переход к корневому меню
-    void GotoRootMenu();
+    void GoToRootMenu();
 
-    /* MOVEMENT SECTION */
+    /* NAVIGATION SECTION */
 
     /// @brief Перемещение вверх по меню
     void NavigateUp();
@@ -53,15 +49,16 @@ public:
     /// @brief Возврат назад
     void Back();
 
-    /* MOVEMENT SECTION END */
+    /* NAVIGATION SECTION END */
+
+    /// @brief Проверяет, находимся ли в корневом меню
+    /// @return true если в корневом меню
+    bool IsAtRoot() const;
 
 private:
-    /// @brief Указатель на корневое меню
-    std::shared_ptr<Menu> _rootMenu {nullptr};
+    /// @brief Навигатор меню
+    std::unique_ptr<MenuNavigator> _navigator;
 
-    /// @brief Указатель на текущее меню
-    std::shared_ptr<Menu> _currentMenu {nullptr};
-
-    /// @brief Контейнер информации о меню
+    /// @brief Контейнер информации о меню для отображения
     MenuInfoContainer _menuInfoContainer;
 };

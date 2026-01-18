@@ -1,85 +1,101 @@
 #include "Menu.h"
+#include "IMenuItem.h"
 
-static const MenuItem _emptyItem;
-
-Menu::Menu(std::shared_ptr<Menu> parentMenu, DisplayMenu displayMenu)
-    : _parentMenu(parentMenu)
-    , _displayMenu(displayMenu)
+Menu::Menu(DisplayMenu displayMenu)
+    : _displayMenuType(displayMenu)
 {}
 
 Menu::~Menu()
 {
-    _menuItems.clear();
+    Clear();
 }
 
-const MenuItem& Menu::GetSelectedItem()
+void Menu::SetParent(std::weak_ptr<Menu> parent)
 {
-    if (_menuItems.empty())
-        return _emptyItem;
-    return _menuItems[_selectedItem];
+    _parent = std::move(parent);
 }
 
-void Menu::SetMenuItems(const std::vector<MenuItem>& menuItems)
+std::shared_ptr<Menu> Menu::GetParent() const
 {
-    _menuItems = menuItems;
+    return _parent.lock();
 }
 
-void Menu::AddMenuItem(const MenuItem menuItem)
+bool Menu::HasParent() const
 {
-    _menuItems.push_back(menuItem);
+    return !_parent.expired();
 }
 
-void Menu::SetDisplayMenu(DisplayMenu displayMenu)
+void Menu::AddItem(std::unique_ptr<IMenuItem> item)
 {
-    _displayMenu = displayMenu;
+    if (item)
+        _items.push_back(std::move(item));
 }
 
-DisplayMenu Menu::GetDisplayMenu() const
+IMenuItem* Menu::GetItemAt(int index) const
 {
-    return _displayMenu;
-}
-
-int Menu::GetMenuItemsSize() const
-{
-    return _menuItems.size();
-}
-
-int Menu::GetCurrentIndex() const
-{
-    return _selectedItem;
-}
-
-const MenuItem& Menu::GetMenuItemAt(int index)
-{
-    if (index < 0 || index >= static_cast<int>(_menuItems.size()))
-        return _emptyItem;
-    return _menuItems[index];
-}
-
-std::shared_ptr<Menu> Menu::ExecuteMenu()
-{
-    if (_menuItems.empty())
+    if (index < 0 || index >= static_cast<int>(_items.size()))
         return nullptr;
-
-    auto string = _menuItems[_selectedItem].GetName();
-    _menuItems[_selectedItem].Execute();
-    return _menuItems[_selectedItem].GetMenu();
+    return _items[index].get();
 }
 
-std::shared_ptr<Menu> Menu::Back()
+IMenuItem* Menu::GetSelectedItem() const
 {
-    _selectedItem = 0;
-    return _parentMenu;
+    return GetItemAt(_selectedIndex);
 }
 
-void Menu::SelectNextItem()
+int Menu::GetItemCount() const
 {
-    if (!_menuItems.empty() && _selectedItem < static_cast<int>(_menuItems.size()) - 1)
-        ++_selectedItem;
+    return static_cast<int>(_items.size());
 }
 
-void Menu::SelectPreviousItem()
+int Menu::GetSelectedIndex() const
 {
-    if (_selectedItem > 0)
-        --_selectedItem;
+    return _selectedIndex;
+}
+
+void Menu::SetSelectedIndex(int index)
+{
+    if (index >= 0 && index < static_cast<int>(_items.size()))
+        _selectedIndex = index;
+}
+
+void Menu::ResetSelection()
+{
+    _selectedIndex = 0;
+}
+
+bool Menu::SelectNext()
+{
+    if (_selectedIndex < static_cast<int>(_items.size()) - 1)
+    {
+        ++_selectedIndex;
+        return true;
+    }
+    return false;
+}
+
+bool Menu::SelectPrevious()
+{
+    if (_selectedIndex > 0)
+    {
+        --_selectedIndex;
+        return true;
+    }
+    return false;
+}
+
+DisplayMenu Menu::GetDisplayMenuType() const
+{
+    return _displayMenuType;
+}
+
+void Menu::SetDisplayMenuType(DisplayMenu displayMenu)
+{
+    _displayMenuType = displayMenu;
+}
+
+void Menu::Clear()
+{
+    _items.clear();
+    _selectedIndex = 0;
 }

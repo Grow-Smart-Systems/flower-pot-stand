@@ -11,6 +11,7 @@
 
 #include "../Common/Data.h"
 #include "Menu/MenuController.h"
+#include "Menu/MenuNavigator.h"
 #include "../Utils/Timer.h"
 
 class Display;

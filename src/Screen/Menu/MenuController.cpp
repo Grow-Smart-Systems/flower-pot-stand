@@ -1,20 +1,29 @@
 #include "MenuController.h"
 #include "Menu.h"
+#include "MenuNavigator.h"
+#include "IMenuItem.h"
 #include "../Display/Display.h"
 
 MenuController::MenuController()
-{
-    _rootMenu = std::make_shared<Menu>(nullptr, DisplayMenu::MAIN_MENU);
-    _currentMenu = _rootMenu;
-}
+    : _navigator(new MenuNavigator())
+{}
 
 const MenuInfoContainer& MenuController::GetDisplayInfo()
 {
     _menuInfoContainer.text.clear();
 
-    _menuInfoContainer.currentIndex = _currentMenu->GetCurrentIndex();
-    _menuInfoContainer.menuSize = _currentMenu->GetMenuItemsSize();
-    _menuInfoContainer.displayMenu = _currentMenu->GetDisplayMenu();
+    auto currentMenu = _navigator->GetCurrentMenu();
+    if (!currentMenu)
+    {
+        _menuInfoContainer.currentIndex = 0;
+        _menuInfoContainer.menuSize = 0;
+        _menuInfoContainer.displayMenu = DisplayMenu::MAIN_MENU;
+        return _menuInfoContainer;
+    }
+
+    _menuInfoContainer.currentIndex = currentMenu->GetSelectedIndex();
+    _menuInfoContainer.menuSize = currentMenu->GetItemCount();
+    _menuInfoContainer.displayMenu = currentMenu->GetDisplayMenuType();
 
     if (_menuInfoContainer.menuSize == 0)
         return _menuInfoContainer;
@@ -22,57 +31,53 @@ const MenuInfoContainer& MenuController::GetDisplayInfo()
     _menuInfoContainer.text.reserve(_menuInfoContainer.menuSize);
     for (int i = 0; i < _menuInfoContainer.menuSize; ++i)
     {
-        _menuInfoContainer.text.push_back(_currentMenu->GetMenuItemAt(i).GetName());
+        IMenuItem* item = currentMenu->GetItemAt(i);
+        if (item)
+            _menuInfoContainer.text.push_back(item->GetName());
+        else
+            _menuInfoContainer.text.push_back("");
     }
     _menuInfoContainer.text.shrink_to_fit();
+
     return _menuInfoContainer;
 }
 
 std::shared_ptr<Menu> MenuController::GetRootMenu() const
 {
-    return _rootMenu;
+    return _navigator->GetRootMenu();
 }
 
-std::shared_ptr<Menu> MenuController::CreateMenuItem(const std::string& name,
-                                                     std::shared_ptr<Menu> parentMenu,
-                                                     std::function<void()> action)
+void MenuController::SetRootMenu(std::shared_ptr<Menu> rootMenu)
 {
-    if (!parentMenu)
-        return nullptr;
-
-    auto newMenu = std::make_shared<Menu>(parentMenu);
-    MenuItem menuItem(name, action, newMenu);
-    parentMenu->AddMenuItem(menuItem);
-    return newMenu;
+    _navigator->SetRootMenu(std::move(rootMenu));
 }
 
-void MenuController::GotoRootMenu()
+void MenuController::GoToRootMenu()
 {
-    _currentMenu = _rootMenu;
+    _navigator->GoToRoot();
 }
 
 void MenuController::NavigateUp()
 {
-    _currentMenu->SelectPreviousItem();
+    _navigator->NavigateUp();
 }
 
 void MenuController::NavigateDown()
 {
-    _currentMenu->SelectNextItem();
+    _navigator->NavigateDown();
 }
 
 void MenuController::SelectOption()
 {
-    auto newCurrentMenu = _currentMenu->ExecuteMenu();
-    if (newCurrentMenu)
-        _currentMenu = newCurrentMenu;
+    _navigator->Select();
 }
 
 void MenuController::Back()
 {
-    auto newCurrentMenu = _currentMenu->Back();
-    if (newCurrentMenu)
-        _currentMenu = newCurrentMenu;
+    _navigator->Back();
 }
 
-
+bool MenuController::IsAtRoot() const
+{
+    return _navigator->IsAtRoot();
+}

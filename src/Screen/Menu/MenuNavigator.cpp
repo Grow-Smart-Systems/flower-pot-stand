@@ -63,17 +63,14 @@ bool MenuNavigator::Back()
     if (!_currentMenu || !_currentMenu->HasParent())
         return false;
 
+    auto parent = _currentMenu->GetParent();
+    if (!parent)
+        return false;
+
     // Сбрасываем выбор текущего меню перед выходом
     _currentMenu->ResetSelection();
-
-    auto parent = _currentMenu->GetParent();
-    if (parent)
-    {
-        _currentMenu = parent;
-        return true;
-    }
-
-    return false;
+    _currentMenu = parent;
+    return true;
 }
 
 void MenuNavigator::GoToRoot()

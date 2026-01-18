@@ -53,11 +53,11 @@ void Screen::InitMenu()
             DisplayMenu::FUNCTIONAL_MENU);
 
         MenuBuilder::AddAction("Humidity", sensorsMenu,
-            nullptr,
+            std::bind(&Screen::humidityAction, this),
             DisplayMenu::FUNCTIONAL_MENU);
 
         MenuBuilder::AddAction("Lux", sensorsMenu,
-            nullptr,
+            std::bind(&Screen::luxAction, this),
             DisplayMenu::FUNCTIONAL_MENU);
     }
 
@@ -65,11 +65,11 @@ void Screen::InitMenu()
     auto settingsMenu = MenuBuilder::CreateSubMenu("Settings", rootMenu, DisplayMenu::SUB_MENU);
     {
         MenuBuilder::AddAction("WiFi", settingsMenu,
-            nullptr,
+            std::bind(&Screen::wifiAction, this),
             DisplayMenu::FUNCTIONAL_MENU);
 
         MenuBuilder::AddAction("Service connection", settingsMenu,
-            nullptr,
+            std::bind(&Screen::serviceConnectionAction, this),
             DisplayMenu::FUNCTIONAL_MENU);
     }
 
@@ -77,11 +77,11 @@ void Screen::InitMenu()
     auto aboutMenu = MenuBuilder::CreateSubMenu("About", rootMenu, DisplayMenu::SUB_MENU);
     {
         MenuBuilder::AddAction("Version", aboutMenu,
-            nullptr,
+            std::bind(&Screen::versionAction, this),
             DisplayMenu::FUNCTIONAL_MENU);
 
         MenuBuilder::AddAction("Author", aboutMenu,
-            nullptr,
+            std::bind(&Screen::authorAction, this),
             DisplayMenu::FUNCTIONAL_MENU);
     }
 }
@@ -91,6 +91,48 @@ void Screen::temperatureAction()
     Serial.println("Screen | temperatureAction");
     Data::GetInstance().SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
     Data::GetInstance().SetDisplayFunctionalScreen(DisplayFunctionalScreen::TEMPERATURE_SENSOR_SCREEN);
+}
+
+void Screen::humidityAction()
+{
+    Serial.println("Screen | humidityAction (not implemented)");
+    Data::GetInstance().SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+    Data::GetInstance().SetDisplayFunctionalScreen(DisplayFunctionalScreen::UNDEFINED_FUNCTIONAL_SCREEN);
+}
+
+void Screen::luxAction()
+{
+    Serial.println("Screen | luxAction (not implemented)");
+    Data::GetInstance().SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+    Data::GetInstance().SetDisplayFunctionalScreen(DisplayFunctionalScreen::UNDEFINED_FUNCTIONAL_SCREEN);
+}
+
+void Screen::wifiAction()
+{
+    Serial.println("Screen | wifiAction (not implemented)");
+    Data::GetInstance().SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+    Data::GetInstance().SetDisplayFunctionalScreen(DisplayFunctionalScreen::UNDEFINED_FUNCTIONAL_SCREEN);
+}
+
+void Screen::serviceConnectionAction()
+{
+    Serial.println("Screen | serviceConnectionAction (not implemented)");
+    Data::GetInstance().SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+    Data::GetInstance().SetDisplayFunctionalScreen(DisplayFunctionalScreen::UNDEFINED_FUNCTIONAL_SCREEN);
+}
+
+void Screen::versionAction()
+{
+    Serial.println("Screen | versionAction (not implemented)");
+    Data::GetInstance().SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+    Data::GetInstance().SetDisplayFunctionalScreen(DisplayFunctionalScreen::UNDEFINED_FUNCTIONAL_SCREEN);
+}
+
+void Screen::authorAction()
+{
+    Serial.println("Screen | authorAction (not implemented)");
+    Data::GetInstance().SetDisplayMenu(DisplayMenu::FUNCTIONAL_MENU);
+    Data::GetInstance().SetDisplayFunctionalScreen(DisplayFunctionalScreen::UNDEFINED_FUNCTIONAL_SCREEN);
 }
 
 void Screen::PrintInitializeScreen()

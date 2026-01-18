@@ -74,6 +74,12 @@ public:
     /// Movement section end ///
 
     void temperatureAction();
+    void humidityAction();
+    void luxAction();
+    void wifiAction();
+    void serviceConnectionAction();
+    void versionAction();
+    void authorAction();
 
 protected:
     /// @brief Печать меню на экране

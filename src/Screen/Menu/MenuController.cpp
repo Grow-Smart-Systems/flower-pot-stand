@@ -5,7 +5,7 @@
 #include "../Display/Display.h"
 
 MenuController::MenuController()
-    : _navigator(new MenuNavigator())
+    : _navigator(std::make_unique<MenuNavigator>())
 {}
 
 const MenuInfoContainer& MenuController::GetDisplayInfo()

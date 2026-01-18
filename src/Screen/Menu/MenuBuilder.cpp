@@ -20,7 +20,7 @@ std::shared_ptr<Menu> MenuBuilder::CreateSubMenu(const std::string& name,
     subMenu->SetParent(parent);
 
     // Создаём пункт меню, ведущий к подменю
-    std::unique_ptr<SubMenuItem> subMenuItem(new SubMenuItem(name, subMenu, displayType));
+    std::unique_ptr<SubMenuItem> subMenuItem = std::make_unique<SubMenuItem>(name, subMenu, displayType);
 
     // Добавляем пункт в родительское меню
     parent->AddItem(std::move(subMenuItem));
@@ -36,7 +36,7 @@ void MenuBuilder::AddAction(const std::string& name,
     if (!menu)
         return;
 
-    std::unique_ptr<ActionMenuItem> actionItem(new ActionMenuItem(name, std::move(action), displayType));
+    std::unique_ptr<ActionMenuItem> actionItem = std::make_unique<ActionMenuItem>(name, std::move(action), displayType);
     menu->AddItem(std::move(actionItem));
 }
 

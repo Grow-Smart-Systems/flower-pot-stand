@@ -43,10 +43,16 @@ void Screen::InitMenu()
 
     // Создаём корневое меню
     auto rootMenu = MenuBuilder::CreateRootMenu(DisplayMenu::MAIN_MENU);
+    if (!rootMenu)
+        return;
+
     _menuController->SetRootMenu(rootMenu);
 
     // Создаём меню сенсоров
     auto sensorsMenu = MenuBuilder::CreateSubMenu("Sensors", rootMenu, DisplayMenu::SUB_MENU);
+    if (!sensorsMenu)
+        return;
+
     {
         MenuBuilder::AddAction("Temperature", sensorsMenu,
             std::bind(&Screen::temperatureAction, this),
@@ -63,6 +69,9 @@ void Screen::InitMenu()
 
     // Создаём меню настроек
     auto settingsMenu = MenuBuilder::CreateSubMenu("Settings", rootMenu, DisplayMenu::SUB_MENU);
+    if (!settingsMenu)
+        return;
+
     {
         MenuBuilder::AddAction("WiFi", settingsMenu,
             std::bind(&Screen::wifiAction, this),
@@ -75,6 +84,9 @@ void Screen::InitMenu()
 
     // Создаём меню "О программе"
     auto aboutMenu = MenuBuilder::CreateSubMenu("About", rootMenu, DisplayMenu::SUB_MENU);
+    if (!aboutMenu)
+        return;
+
     {
         MenuBuilder::AddAction("Version", aboutMenu,
             std::bind(&Screen::versionAction, this),

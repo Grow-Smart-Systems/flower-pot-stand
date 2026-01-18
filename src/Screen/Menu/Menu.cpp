@@ -66,6 +66,9 @@ void Menu::ResetSelection()
 
 bool Menu::SelectNext()
 {
+    if (_items.empty())
+        return false;
+
     if (_selectedIndex < static_cast<int>(_items.size()) - 1)
     {
         ++_selectedIndex;
@@ -76,6 +79,9 @@ bool Menu::SelectNext()
 
 bool Menu::SelectPrevious()
 {
+    if (_items.empty())
+        return false;
+        
     if (_selectedIndex > 0)
     {
         --_selectedIndex;

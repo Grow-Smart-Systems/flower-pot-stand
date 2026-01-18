@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 #include <memory>
-#include <stack>
+
 #include "../../Common/EnumClasses.h"
 
 class Menu;

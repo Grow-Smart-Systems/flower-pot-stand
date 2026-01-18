@@ -12,7 +12,7 @@ Menu::~Menu()
 
 void Menu::SetParent(std::weak_ptr<Menu> parent)
 {
-    _parent = std::move(parent);
+    _parent = parent;
 }
 
 std::shared_ptr<Menu> Menu::GetParent() const

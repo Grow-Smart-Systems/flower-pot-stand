@@ -7,11 +7,10 @@
 #include "../../Common/EnumClasses.h"
 #include "IMenuItem.h"
 
-class IMenuItem;
 
 /// @brief Класс контейнера меню
 /// @details Хранит пункты меню и управляет навигацией внутри одного уровня
-class Menu final : public std::enable_shared_from_this<Menu>
+class Menu final
 {
 public:
     /// @brief Конструктор

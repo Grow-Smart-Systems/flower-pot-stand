@@ -4,9 +4,9 @@
 #include <memory>
 #include <vector>
 #include "../../Common/Containers/MenuInfoContainer.h"
+#include "MenuNavigator.h"
 
 class Menu;
-class MenuNavigator;
 class IMenuItem;
 
 /// @brief Класс контроллера меню

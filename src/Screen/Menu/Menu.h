@@ -1,16 +1,21 @@
 #pragma once
 
+#ifndef UNIT_TEST
 #include <Arduino.h>
+#endif
 #include <memory>
 #include <vector>
+#include <string>
+#include <functional>
 
 #include "../../Common/EnumClasses.h"
+#ifndef UNIT_TEST
 #include "../../Common/Data.h"
 #include "../Display/Display.h"
+class Display;
+#endif
 #include "MenuItem.h"
 
-
-class Display;
 class MenuItem;
 
 /// @brief Класс меню

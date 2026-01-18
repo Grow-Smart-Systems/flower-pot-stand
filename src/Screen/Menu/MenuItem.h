@@ -1,7 +1,11 @@
 #pragma once
 
+#ifndef UNIT_TEST
 #include <Arduino.h>
+#endif
 #include <memory>
+#include <string>
+#include <functional>
 
 class Menu;
 

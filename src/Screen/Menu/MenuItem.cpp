@@ -1,5 +1,7 @@
 #include "MenuItem.h"
+#ifndef UNIT_TEST
 #include "../../Common/Data.h"
+#endif
 
 MenuItem::MenuItem(const std::string& name, std::function<void()> action, std::shared_ptr<Menu> subMenu) :
     _name(name),

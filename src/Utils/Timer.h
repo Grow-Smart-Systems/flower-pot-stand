@@ -1,6 +1,12 @@
 #pragma once
 
+#ifndef UNIT_TEST
 #include <Arduino.h>
+#else
+#include <cstdint>
+extern unsigned long _mockMillis;
+inline unsigned long millis() { return _mockMillis; }
+#endif
 
 
 /// @brief Класс таймера.
